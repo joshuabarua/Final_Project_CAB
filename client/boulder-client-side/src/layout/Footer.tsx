@@ -10,7 +10,7 @@ const Footer = () => {
 				<div style={{display: 'flex', justifyContent: 'space-evenly', gap: '20px', alignItems: 'center', flexDirection: 'row', width: '100%'}}>
 					<div>
 						<p>
-							<strong>BOULDER BiBi's GMBH </strong>{' '}
+							<strong>BOULDER BeBi's GMBH </strong>{' '}
 						</p>
 						<p>Thiemannstr. 1 12059 Berlin</p>
 						<p>
@@ -20,7 +20,7 @@ const Footer = () => {
 							<strong>Sa,So,</strong>Feiertag 10-22 Uhr
 						</p>
 						<p>☎️ (030)22479815</p>
-						<p>✉️ info@boulderbibis.de</p>
+						<p>✉️ info@boulderbebis.de</p>
 					</div>
 					<div>
 						<h2>ROUTENBAU</h2>
