@@ -17,7 +17,7 @@ const Homepage = () => {
 					style={{
 						fontSize: 96,
 					}}>
-					Boulder Bibi's
+					Boulder Bebi's
 				</h1>
 
 				<p>Book your next session online!</p>
