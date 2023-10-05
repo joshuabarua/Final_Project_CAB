@@ -7,6 +7,7 @@ import {AuthContextProvider} from './contexts/AuthContext.tsx';
 import {ToastContainer} from 'react-toastify';
 import Error404 from './pages/Error404.tsx';
 import Homepage from './pages/Homepage.tsx';
+import Footer from './layout/Footer.tsx';
 
 const router = createBrowserRouter([
 	{
@@ -20,10 +21,13 @@ const router = createBrowserRouter([
 		children: [
 			{
 				element: (
-					<WithNav>
-						<ToastContainer style={{}} />
-						<Outlet />
-					</WithNav>
+					<>
+						<WithNav>
+							<ToastContainer style={{}} />
+							<Outlet />
+						</WithNav>
+						<Footer />
+					</>
 				),
 				children: [
 					{

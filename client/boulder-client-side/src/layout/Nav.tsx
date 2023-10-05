@@ -43,30 +43,23 @@ const Nav = () => {
 		fontWeight: 'bold',
 	};
 
-
-    //TODO: Figure out how to achieve mouseMove with mousemove event to affect when the nav displays and hides
+	//TODO: Figure out how to achieve mouseMove with mousemove event to affect when the nav displays and hides
 	useEffect(() => {
 		window.addEventListener('scroll', changeNav);
 
 		// Add event listeners for mouse movement
 		window.addEventListener('mousemove', handleMouseMove);
-		window.addEventListener('mouseleave', handleMouseLeave);
 
 		return () => {
 			window.removeEventListener('scroll', changeNav);
 
 			// Remove event listeners when component unmounts
 			window.removeEventListener('mousemove', handleMouseMove);
-			window.removeEventListener('mouseleave', handleMouseLeave);
 		};
 	}, []);
 
 	const handleMouseMove = () => {
 		setIsMouseMoving(true);
-	};
-
-	const handleMouseLeave = () => {
-		setIsMouseMoving(false);
 	};
 
 	const changeNav = () => {
