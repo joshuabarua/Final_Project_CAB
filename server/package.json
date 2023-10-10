@@ -1,0 +1,32 @@
+{
+	"name": "boulderbb_server",
+	"version": "1.0.0",
+	"description": "Server for boulderbbs",
+	"main": "index.js",
+	"author": "Joshua Barua-Fowle",
+	"license": "MIT",
+	"private": true,
+	"type": "module",
+	"dependencies": {
+		"@apollo/server": "^4.9.4",
+		"bcrypt": "^5.1.1",
+		"body-parser": "^1.20.2",
+		"cloudinary": "^1.40.0",
+		"colors": "^1.4.0",
+		"concurrently": "^8.2.0",
+		"cors": "^2.8.5",
+		"dotenv": "^16.3.1",
+		"express": "^4.18.2",
+		"graphql": "^16.8.1",
+		"mongoose": "^7.4.3",
+		"multer": "^1.4.5-lts.1",
+		"passport": "^0.6.0",
+		"passport-jwt": "^4.0.1"
+	},
+	"devDependencies": {
+		"nodemon": "^3.0.1"
+	},
+	"scripts": {
+		"start": "concurrently \"nodemon index.js\" \"cd ../client/boulder-client-side && yarn run dev\""
+	}
+}
