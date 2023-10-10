@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
 		required: true,
 	},
 
-	assignedBooking: {type: mongoose.Schema.Types.ObjectId, ref: 'Booking'},
+	assignedBooking: [{type: mongoose.Schema.Types.ObjectId, ref: 'Booking'}],
 });
 
 const userModel = mongoose.model('user', userSchema);

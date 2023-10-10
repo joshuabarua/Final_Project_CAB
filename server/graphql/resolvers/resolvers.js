@@ -4,7 +4,7 @@ import bookingModel from '../../models/bookingModel.js';
 const resolvers = {
 	Query: {
 		async users(_, __, ___, info) {
-			const users = await usersModel.find();
+			const users = await userModel.find();
 			return users;
 		},
 
@@ -48,8 +48,6 @@ const resolvers = {
 	Mutation: {
 		async addUser(_, args) {
 			const newUser = new userModel({
-				//   name: args.newUserData.name,
-				//     secretIdentity: args.newUserData.secretIdentity
 				...args.newUserData,
 			});
 			return await newUser.save();

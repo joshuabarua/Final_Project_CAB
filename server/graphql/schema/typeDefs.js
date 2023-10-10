@@ -1,9 +1,6 @@
 // const typeDefs = `#graphql
 // type Superhero {
-
 // }
-
-//in my case i need to use "gql"
 const gql = String.raw;
 
 const typeDefs = gql`
