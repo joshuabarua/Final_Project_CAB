@@ -8,6 +8,11 @@ import {ToastContainer} from 'react-toastify';
 import Error404 from './pages/Error404.tsx';
 import Homepage from './pages/Homepage.tsx';
 import Footer from './layout/Footer.tsx';
+import News from './pages/News.tsx';
+import Register from './pages/Register.tsx';
+import Login from './pages/Login.tsx';
+import Info from './pages/Info.tsx';
+import Contact from './pages/Contact.tsx';
 
 const router = createBrowserRouter([
 	{
@@ -34,21 +39,29 @@ const router = createBrowserRouter([
 						path: '/',
 						element: <Homepage />,
 					},
+					{
+						path: '/news',
+						element: <News />,
+					},
+					{
+						path: '/register',
+						element: <Register />,
+					},
+					{
+						path: '/login',
+						element: <Login />,
+					},
+					{
+						path: '/info',
+						element: <Info />,
+					},
+					{
+						path: '/contact',
+						element: <Contact />,
+					},
 					// {
 					// 	path: '/myprofile',
 					// 	element: <Profile />,
-					// },
-					// {
-					// 	path: '/map',
-					// 	element: <Map />,
-					// },
-					// {
-					// 	path: '/login',
-					// 	element: <Login />,
-					// },
-					// {
-					// 	path: '/newUser',
-					// 	element: <Signup />,
 					// },
 				],
 			},

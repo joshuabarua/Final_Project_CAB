@@ -1,16 +1,15 @@
 import {faFacebook} from '@fortawesome/free-brands-svg-icons/faFacebook';
 import {faInstagram} from '@fortawesome/free-brands-svg-icons/faInstagram';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import React from 'react';
 
 const Footer = () => {
 	return (
 		<>
-			<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100vw', height: '50vh', padding: '10px'}}>
+			<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100vw', height: '30vh', padding: '10px'}}>
 				<div style={{display: 'flex', justifyContent: 'space-evenly', gap: '20px', alignItems: 'center', flexDirection: 'row', width: '100%'}}>
 					<div>
 						<p>
-							<strong>BOULDER BeBi's GMBH </strong>{' '}
+							<strong>BOULDER Bb's GMBH </strong>{' '}
 						</p>
 						<p>Thiemannstr. 1 12059 Berlin</p>
 						<p>

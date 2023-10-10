@@ -17,7 +17,7 @@ const Nav = () => {
 	const [isMouseMoving, setIsMouseMoving] = useState(false);
 
 	const navStyles: CSSProperties = {
-		background: scrollNav ? '#24003b' : 'transparent',
+		background: scrollNav ? '#fce6d1' : 'transparent',
 		height: '60px', // Make sure to enclose height in quotes
 		width: '100%', // Make sure to enclose width in quotes
 		marginTop: '-0px', // Make sure to enclose marginTop in quotes
@@ -78,8 +78,15 @@ const Nav = () => {
 							Home
 						</NavLink>
 
-						<NavLink to='/map' style={({isActive}) => (isActive ? activeLink : {})}>
-							Map
+						<NavLink to='/info' style={({isActive}) => (isActive ? activeLink : {})}>
+							Info
+						</NavLink>
+
+						<NavLink to='/Contact' style={({isActive}) => (isActive ? activeLink : {})}>
+							Contact
+						</NavLink>
+						<NavLink to='/news' style={({isActive}) => (isActive ? activeLink : {})}>
+							News
 						</NavLink>
 						{user ? (
 							<NavLink to='/myprofile' style={({isActive}) => (isActive ? activeLink : {})}>
@@ -93,9 +100,7 @@ const Nav = () => {
 							<></>
 						) : (
 							<NavLink to='/login' style={({isActive}) => (isActive ? activeLink : {})}>
-								{/* <IconButton color='inherit'>
-								<ExitToAppIcon />
-							</IconButton> */}
+								Login
 							</NavLink>
 						)}
 						<p>

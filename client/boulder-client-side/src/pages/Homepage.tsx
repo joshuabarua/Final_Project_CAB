@@ -1,4 +1,4 @@
-import backgroundVideo from '../assets/vids/backgroundVid.mp4';
+// import backgroundVideo from '../assets/vids/backgroundVid.mp4';
 // import {NavLink} from 'react-router-dom';
 
 const Homepage = () => {
@@ -44,7 +44,7 @@ const Homepage = () => {
 						width: '100%',
 						filter: 'saturate(300%) blur(5px)  sepia(70%)',
 					}}>
-					<source src={backgroundVideo} type='video/mp4' />
+					<source src={''} type='video/mp4' />
 				</video>
 			</div>
 			<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100vw', height: '100vh', padding: '1rem '}}>
