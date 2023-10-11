@@ -1,13 +1,10 @@
-//REVIEW[epic=1-Server setup, seq=1] 1-setup server as usual and connect to DB
-
 import express from 'express';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
+import configurePassport from './config/passportConfig.js';
 dotenv.config();
 import colors from 'colors';
-
 import connectDB from './config/db.js';
-
 // import bodyParser from "body-parser";
 import {ApolloServer} from '@apollo/server';
 import {expressMiddleware} from '@apollo/server/express4';
@@ -20,6 +17,7 @@ const addMiddlewares = () => {
 	app.use(express.json());
 	app.use(express.urlencoded({extended: true}));
 	app.use(cors());
+	configurePassport();
 };
 
 const startServer = async () => {
@@ -35,10 +33,8 @@ const startServer = async () => {
 		'/graphql',
 		expressMiddleware(server, {
 			context: ({req, res}) => {
-				console.log('req.headers :>> ', req.headers);
-				console.log('asdasdas');
+				// console.log(`req.headers :>> ${req.headers.token}`.bgGreen);
 				//do your JWT strategy to authorize the token
-				// const user = jwtStrategy(req.headers.authorization)
 				return {token: 'our token'};
 			},
 		})

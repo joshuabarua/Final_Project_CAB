@@ -1,5 +1,8 @@
 import userModel from '../../models/userModel.js';
 import bookingModel from '../../models/bookingModel.js';
+//  import    from '@apollo/server';
+import {generateToken} from '../../utils/jwt.js';
+import {verifyPassword} from '../../utils/bcrypt.js';
 
 const resolvers = {
 	Query: {
@@ -52,15 +55,81 @@ const resolvers = {
 			});
 			return await newUser.save();
 		},
-		async addBooking(parent, args) {
+		async addBooking(_, args) {
 			const newBooking = new bookingModel({
 				...args.newBookingData,
 			});
 			return await newBooking.save();
 		},
-
 		async deleteUser(_, args) {
 			return await userModel.findByIdAndRemove(args.id);
+		},
+
+		login: async (_, {email, password}) => {
+			try {
+				const existingUser = await userModel.findOne({email});
+
+				if (!existingUser) {
+					throw new Error('No user with that email.');
+				}
+
+				const verified = await verifyPassword(password, existingUser.password);
+
+				if (!verified) {
+					throw new Error("Password doesn't match.");
+				}
+
+				const token = generateToken(existingUser);
+				return {
+					token,
+					user: {
+						_id: existingUser._id,
+						email: existingUser.email,
+						name: existingUser.name,
+						createdAt: existingUser.createdAt,
+					},
+				};
+			} catch (error) {
+				throw new AuthenticationError('Something went wrong...');
+			}
+		},
+
+		register: async (_, {email, password, name}) => {
+			try {
+				// Validate the input
+				if (!email || !password || !name) {
+					throw new Error('Please fill out all fields', {
+						invalidArgs: ['email', 'password', 'name'],
+					});
+				}
+				// Perform user creation logic
+				const hashedPassword = await encryptPassword(password);
+				const newUser = new userModel({
+					email,
+					password: hashedPassword,
+					name,
+				});
+				const result = await newUser.save();
+				const token = generateToken(newUser);
+				const forFront = {
+					email: result.email,
+					name: result.name,
+					_id: result._id,
+					createdAt: result.createdAt,
+				};
+				return {
+					token,
+					user: forFront,
+				};
+			} catch (error) {
+				if (error.code === 11000) {
+					throw new Error('That email is already registered', {
+						invalidArgs: ['email'],
+					});
+				} else {
+					throw new Error('Unknown error occurred');
+				}
+			}
 		},
 	},
 };
