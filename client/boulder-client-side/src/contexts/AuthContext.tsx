@@ -8,8 +8,8 @@ interface DefaultValue {
 	user: null | User;
 	setUser: React.Dispatch<React.SetStateAction<User | null>>;
 	login: (email: string, password: string) => Promise<void>;
-	signup: (email: string, password: string, username: string, profilePicFile: File | null) => Promise<void>;
-	update: (updateFields: {email: string; password: string; username: string; profilePicFile: File | null}) => void;
+	register: (email: string, password: string, name: string) => Promise<void>;
+	update: (updateFields: {email: string; password: string; name: string}) => void;
 	logout: () => void;
 }
 
@@ -32,7 +32,7 @@ const initialValue: DefaultValue = {
 	login: () => {
 		throw new Error('context not implemented.');
 	},
-	signup: () => {
+	register: () => {
 		throw new Error('context not implemented.');
 	},
 	logout: () => {
@@ -50,14 +50,12 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 	const [user, setUser] = useState<null | User>(null);
 	const redirect = useNavigate();
 
-	const signup = async (email: string, password: string, username: string, profilePicFile: File | null) => {
+	const register = async (email: string, password: string, name: string) => {
 		const formData = new FormData();
-		formData.append('username', username);
+		formData.append('name', name);
 		formData.append('email', email);
 		formData.append('password', password);
-		if (profilePicFile) {
-			formData.append('image_url', profilePicFile);
-		}
+
 		const requestOptions = {
 			method: 'POST',
 			body: formData,
@@ -81,13 +79,12 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 		}
 	};
 
-	const update = async (updateFields: {email: string; password: string; username: string; profilePicFile: File | null}) => {
+	const update = async (updateFields: {email: string; password: string; name: string}) => {
 		const formData = new FormData();
-		const {email = '', password = '', username = '', profilePicFile = null} = updateFields;
-		username && formData.append('username', username);
+		const {email = '', password = '', name = ''} = updateFields;
+		name && formData.append('name', name);
 		email && formData.append('email', email);
 		password && formData.append('password', password);
-		profilePicFile && formData.append('image_url', profilePicFile);
 
 		const token = getToken();
 
@@ -178,5 +175,5 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 		getActiveUser().catch((e) => console.log(e));
 	}, []);
 
-	return <AuthContext.Provider value={{user, setUser, signup, login, logout, update}}>{children}</AuthContext.Provider>;
+	return <AuthContext.Provider value={{user, setUser, register, login, logout, update}}>{children}</AuthContext.Provider>;
 };
