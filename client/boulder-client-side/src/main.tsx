@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './App.css';
 import WithNav from './layout/WithNav.tsx';
 import {Outlet, RouterProvider, createBrowserRouter} from 'react-router-dom';
 import {AuthContextProvider} from './contexts/AuthContext.tsx';

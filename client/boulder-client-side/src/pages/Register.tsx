@@ -4,12 +4,6 @@ import {NavLink} from 'react-router-dom';
 // import {Users} from '../@types';
 import {AuthContext} from '../contexts/AuthContext';
 
-const formStyles: React.CSSProperties = {
-	display: 'flex',
-	justifyContent: 'center',
-	alignItems: 'center',
-	flexDirection: 'column',
-};
 const Register = () => {
 	const {register} = useContext(AuthContext);
 	// const [users, setUsers] = useState<Users>([]);
@@ -24,7 +18,7 @@ const Register = () => {
 	};
 
 	return (
-		<div className='' style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw', height: '80vw'}}>
+		<div className='' style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw', height: '50vw', minHeight: '900px'}}>
 			<div
 				style={{
 					display: 'flex',
@@ -51,19 +45,21 @@ const Register = () => {
 						flexDirection: 'column',
 						gap: 25,
 					}}>
-					<div style={formStyles}>
+					<div className={'formStyles'}>
 						<label htmlFor='username'>Username</label>
-						<input value={username} name='username' onChange={(e) => setUsername(e.target.value)} />
+						<input className='authFormInput' value={username} name='username' onChange={(e) => setUsername(e.target.value)} />
 					</div>
-					<div style={formStyles}>
+					<div className={'formStyles'}>
 						<label htmlFor='email'>Email</label>
-						<input value={email} name='email' onChange={(e) => setEmail(e.target.value)} />
+						<input className='authFormInput' value={email} name='email' onChange={(e) => setEmail(e.target.value)} />
 					</div>
-					<div style={formStyles}>
+					<div className={'formStyles'}>
 						<label htmlFor='password'>Password</label>
-						<input type='password' name='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+						<input className='authFormInput' type='password' name='password' value={password} onChange={(e) => setPassword(e.target.value)} />
 					</div>
-					<button type='submit'>Signup</button>
+					<button className='authFormBtn' type='submit'>
+						Signup
+					</button>
 				</form>
 
 				<p>
