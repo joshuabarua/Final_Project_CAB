@@ -1,8 +1,7 @@
 import userModel from '../../models/userModel.js';
 import bookingModel from '../../models/bookingModel.js';
-//  import    from '@apollo/server';
 import {generateToken} from '../../utils/jwt.js';
-import {verifyPassword} from '../../utils/bcrypt.js';
+import {verifyPassword, encryptPassword} from '../../utils/bcrypt.js';
 
 const resolvers = {
 	Query: {
@@ -65,7 +64,7 @@ const resolvers = {
 			return await userModel.findByIdAndRemove(args.id);
 		},
 
-		login: async (_, {email, password}) => {
+		async login(_, {email, password}) {
 			try {
 				const existingUser = await userModel.findOne({email});
 
@@ -90,18 +89,19 @@ const resolvers = {
 					},
 				};
 			} catch (error) {
-				throw new AuthenticationError('Something went wrong...');
+				throw new Error('Something went wrong...', error);
 			}
 		},
 
-		register: async (_, {email, password, name}) => {
+		async register(_, args) {
+			const {email, password, name} = args.newUserData;
+			// Validate the input
+			if (!email || !password || !name) {
+				throw new Error('Please fill out all fields', {
+					invalidArgs: ['email', 'password', 'name'],
+				});
+			}
 			try {
-				// Validate the input
-				if (!email || !password || !name) {
-					throw new Error('Please fill out all fields', {
-						invalidArgs: ['email', 'password', 'name'],
-					});
-				}
 				// Perform user creation logic
 				const hashedPassword = await encryptPassword(password);
 				const newUser = new userModel({
@@ -109,13 +109,14 @@ const resolvers = {
 					password: hashedPassword,
 					name,
 				});
+
 				const result = await newUser.save();
 				const token = generateToken(newUser);
 				const forFront = {
 					email: result.email,
 					name: result.name,
+					password: result.password,
 					_id: result._id,
-					createdAt: result.createdAt,
 				};
 				return {
 					token,
@@ -127,7 +128,8 @@ const resolvers = {
 						invalidArgs: ['email'],
 					});
 				} else {
-					throw new Error('Unknown error occurred');
+					console.log(error);
+					throw new Error('Unknown error occurred', error);
 				}
 			}
 		},

@@ -11,9 +11,6 @@ const typeDefs = gql`
 		VALID
 	}
 
-	"""
-	superhero defines a superhero in our DB
-	"""
 	type User {
 		_id: ID!
 		name: String!
@@ -47,7 +44,7 @@ const typeDefs = gql`
 		addBooking(newBookingData: AddBookingInput!): Booking
 		deleteUser(_id: ID!): User
 		login(email: String!, password: String!): AuthPayload
-		register(email: String!, password: String!, username: String!): AuthPayload
+		register(newUserData: AddUserInput!): AuthPayload
 	}
 
 	input AddUserInput {
