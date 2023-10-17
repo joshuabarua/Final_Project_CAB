@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {ApolloClient, NormalizedCacheObject, ApolloProvider} from '@apollo/client';
+import {cache} from './cache';
 import './App.css';
 import WithNav from './layout/WithNav.tsx';
 import {Outlet, RouterProvider, createBrowserRouter} from 'react-router-dom';
@@ -13,6 +15,11 @@ import Register from './pages/Register.tsx';
 import Login from './pages/Login.tsx';
 import Info from './pages/Info.tsx';
 import Contact from './pages/Contact.tsx';
+
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+	cache,
+	uri: 'http://localhost:4000/graphql',
+});
 
 const router = createBrowserRouter([
 	{
@@ -73,8 +80,14 @@ const router = createBrowserRouter([
 	},
 ]);
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root');
+if (!rootElement) throw new Error('Failed to find the root element');
+const root = ReactDOM.createRoot(rootElement);
+
+root.render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<ApolloProvider client={client}>
+			<RouterProvider router={router} />
+		</ApolloProvider>
 	</React.StrictMode>
 );

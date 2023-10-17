@@ -150,29 +150,29 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 		toast.success('Logging out... Cya!');
 	};
 
-	const getActiveUser = async () => {
-		const token = getToken();
-		if (token) {
-			try {
-				const myHeaders = new Headers({Authorization: `Bearer ${token}`});
-				const requestOptions = {
-					method: 'GET',
-					headers: myHeaders,
-				};
-				const response = await fetch(`${baseURL}api/users/me`, requestOptions);
-				const result = (await response.json()) as User;
-				setUser(result);
-			} catch (error) {
-				toast.error(error as string);
-				console.log(error);
-			}
-		} else {
-			setUser(null);
-		}
-	};
+	// const getActiveUser = async () => {
+	// 	const token = getToken();
+	// 	if (token) {
+	// 		try {
+	// 			const myHeaders = new Headers({Authorization: `Bearer ${token}`});
+	// 			const requestOptions = {
+	// 				method: 'GET',
+	// 				headers: myHeaders,
+	// 			};
+	// 			const response = await fetch(`${baseURL}api/users/me`, requestOptions);
+	// 			const result = (await response.json()) as User;
+	// 			setUser(result);
+	// 		} catch (error) {
+	// 			toast.error(error as string);
+	// 			console.log(error);
+	// 		}
+	// 	} else {
+	// 		setUser(null);
+	// 	}
+	// };
 
 	useEffect(() => {
-		getActiveUser().catch((e) => console.log(e));
+		// getActiveUser().catch((e) => console.log(e));
 	}, []);
 
 	return <AuthContext.Provider value={{user, setUser, register, login, logout, update}}>{children}</AuthContext.Provider>;
