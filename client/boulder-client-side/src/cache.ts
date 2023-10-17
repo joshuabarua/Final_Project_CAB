@@ -9,11 +9,6 @@ export const cache: InMemoryCache = new InMemoryCache({
 						return isLoggedInVar();
 					},
 				},
-				cartItems: {
-					read() {
-						return cartItemsVar();
-					},
-				},
 				launches: {
 					keyArgs: false,
 					merge(existing, incoming) {
@@ -36,4 +31,3 @@ export const cache: InMemoryCache = new InMemoryCache({
 });
 
 export const isLoggedInVar = makeVar<boolean>(!!localStorage.getItem('token'));
-export const cartItemsVar = makeVar<string[]>([]);
