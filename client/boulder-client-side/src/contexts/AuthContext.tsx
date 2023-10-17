@@ -1,14 +1,15 @@
 import {createContext, useState, ReactNode, useEffect} from 'react';
-import {NotOk, User} from '../@types';
+import {LoginData, LoginVariables, NotOk, User} from '../@types';
 import {toast} from 'react-toastify';
 import {useNavigate} from 'react-router-dom';
 import getToken from '../utils/getToken';
-import {LOGIN_USER} from "../gql/mutations.js"
+import {LOGIN_USER} from '../gql/mutations.js';
+import {useMutation} from '@apollo/client';
 
 interface DefaultValue {
 	user: null | User;
 	setUser: React.Dispatch<React.SetStateAction<User | null>>;
-	login: (email: string, password: string) => Promise<void>;
+	login: ({loginEmail, loginPassword}: LoginVariables) => Promise<void>;
 	register: (email: string, password: string, name: string) => Promise<void>;
 	update: (updateFields: {email: string; password: string; name: string}) => void;
 	logout: () => void;
@@ -17,12 +18,6 @@ interface DefaultValue {
 interface SignupResult {
 	user: User;
 	token: string;
-}
-
-interface LoginResult {
-	verified: boolean;
-	token: string;
-	user: User;
 }
 
 const initialValue: DefaultValue = {
@@ -114,41 +109,34 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 		}
 	};
 
-	const login = async (email: string, password: string) => {
-		const myHeaders = new Headers({
-			'Content-Type': 'application/x-www-form-urlencoded',
-		});
-
-		const urlencoded = new URLSearchParams({email: email, password: password});
-
-		const requestOptions = {
-			method: 'POST',
-			headers: myHeaders,
-			body: urlencoded,
-		};
-		try {
-			const response = await fetch(`${baseURL}api/users/login`, requestOptions);
-			if (!response.ok) {
-				const result = (await response.json()) as NotOk;
-				toast.error(`Something went wrong - ${result.error}`);
-			} else {
-				const result = (await response.json()) as LoginResult;
-				const {token} = result as LoginResult;
-				localStorage.setItem('token', token);
-				localStorage.setItem('user', JSON.stringify(result.user));
-				toast.success('Login Successful');
-				setUser(result.user);
-				setTimeout(() => redirect('/'), 2000);
-			}
-		} catch (error) {
-			toast.error(`${error as Error}`);
-		}
-	};
-
 	const logout = () => {
 		setUser(null);
 		localStorage.removeItem('token');
 		toast.success('Logging out... Cya!');
+	};
+
+	const [loginMutationFunc, {data: loginData, error: loginError, loading: loginLoading}] = useMutation<LoginData, LoginVariables>(LOGIN_USER);
+	const login = async ({loginEmail, loginPassword}: LoginVariables) => {
+		try {
+			const result = await loginMutationFunc({
+				variables: {loginEmail, loginPassword},
+			});
+			console.log(loginData, loginLoading);
+
+			if (loginError) {
+				toast.error(`Something went wrong - ${loginError.message}`);
+			}
+			if (result.data) {
+				const token = result.data.login.token;
+				localStorage.setItem('token', token);
+				localStorage.setItem('user', JSON.stringify(result.data.login.user));
+				toast.success('Login Successful');
+				setUser(result.data.login.user);
+				setTimeout(() => redirect('/'), 2000);
+			}
+		} catch (error) {
+			toast.error(`Something went wrong - ${error}`);
+		}
 	};
 
 	// const getActiveUser = async () => {

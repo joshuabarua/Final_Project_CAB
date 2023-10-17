@@ -93,9 +93,21 @@ export interface UserPostingComment {
 
 export type Comments = Comment[];
 
-interface updateFields {
+export interface updateFields {
 	email?: string;
 	password?: string;
 	username?: string;
 	profilePicFile?: File | null;
+}
+
+export type LoginData = {
+	login: {
+		token: string;
+		user: User;
+	};
+};
+
+export interface LoginVariables {
+	loginEmail: string;
+	loginPassword: string;
 }
