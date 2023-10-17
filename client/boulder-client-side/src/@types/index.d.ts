@@ -107,7 +107,7 @@ export type LoginData = {
 	};
 };
 
-export interface LoginVariables {
+export type LoginVariables = {
 	loginEmail: string;
 	loginPassword: string;
-}
+};

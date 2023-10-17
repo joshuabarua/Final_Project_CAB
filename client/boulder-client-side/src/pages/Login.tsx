@@ -1,16 +1,16 @@
-import React from 'react';
 import {FormEvent, useContext, useState} from 'react';
 import {NavLink} from 'react-router-dom';
 import {AuthContext} from '../contexts/AuthContext';
+import {LoginVariables} from '../@types';
 
 const Login = () => {
 	const {login} = useContext(AuthContext);
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-
+	const [loginEmail, setEmail] = useState('');
+	const [loginPassword, setPassword] = useState('');
+	const loginVariables: LoginVariables = {loginEmail, loginPassword};
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		login(email, password).catch((e) => console.log(e));
+		login(loginVariables).catch((e) => console.log(e));
 	};
 
 	return (
@@ -44,11 +44,11 @@ const Login = () => {
 						}}>
 						<div className={'formStyles'}>
 							<label htmlFor='email'>Email</label>
-							<input className='authFormInput' value={email} name='email' onChange={(e) => setEmail(e.target.value)} />
+							<input className='authFormInput' value={loginPassword} name='email' onChange={(e) => setEmail(e.target.value)} />
 						</div>
 						<div className={'formStyles'}>
 							<label htmlFor='password'>Password</label>
-							<input className='authFormInput' type='password' name='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+							<input className='authFormInput' type='password' name='password' value={loginPassword} onChange={(e) => setPassword(e.target.value)} />
 						</div>
 						<button className='authFormBtn' type='submit'>
 							Login
