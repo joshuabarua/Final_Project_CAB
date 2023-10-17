@@ -1,5 +1,14 @@
 import {gql} from '@apollo/client';
 
+// Common Fields Fragment
+export const USER_FIELDS = gql`
+	fragment UserFields on User {
+		_id
+		email
+		name
+	}
+`;
+
 // User Mutations
 export const LOGIN_USER = gql`
 	mutation LoginUser($loginEmail: String!, $loginPassword: String!) {
@@ -32,22 +41,5 @@ export const DELETE_USER = gql`
 		deleteUser(id: $deleteUserId) {
 			name
 		}
-	}
-`;
-
-// Other Mutations
-export const OTHER_MUTATION = gql`
-  mutation OtherMutation($input: InputType) {
-    // Define your mutation here
-  }
-`;
-
-// Common Fields Fragment
-export const USER_FIELDS = gql`
-	fragment UserFields on User {
-		_id
-		email
-		name
-		createdAt
 	}
 `;

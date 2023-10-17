@@ -3,6 +3,7 @@ import {NotOk, User} from '../@types';
 import {toast} from 'react-toastify';
 import {useNavigate} from 'react-router-dom';
 import getToken from '../utils/getToken';
+import {LOGIN_USER} from "../gql/mutations.js"
 
 interface DefaultValue {
 	user: null | User;
