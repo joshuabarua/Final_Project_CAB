@@ -41,3 +41,14 @@ export const DELETE_USER = gql`
 		}
 	}
 `;
+
+//Queries
+export const GET_CURRENT_USER = gql`
+	query CurrentUser {
+		currentUser {
+			_id
+			email
+			name
+		}
+	}
+`;

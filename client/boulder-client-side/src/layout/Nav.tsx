@@ -1,7 +1,8 @@
 import React, {CSSProperties, useContext, useEffect, useState} from 'react';
-import {NavLink} from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import {AuthContext} from '../contexts/AuthContext';
-
+import {AUTH_TOKEN, USER_INFO} from '../constants';
+import {toast} from 'react-toastify';
 // import {Nav, NavLink, Bars, NavMenu, NavBtn, IconInsta, IconFB, LogoImg} from './navElements';
 
 // interface Props {
@@ -12,6 +13,9 @@ import {AuthContext} from '../contexts/AuthContext';
 const Nav = () => {
 	// const {scrollNav, setScrollNav} = props;
 	const {user} = useContext(AuthContext);
+	const authToken = localStorage.getItem(AUTH_TOKEN);
+
+	const navigate = useNavigate();
 
 	const [scrollNav, setScrollNav] = useState(false);
 	const [isMouseMoving, setIsMouseMoving] = useState(false);
@@ -77,32 +81,39 @@ const Nav = () => {
 						<NavLink to='/' style={({isActive}) => (isActive ? activeLink : {})}>
 							Home
 						</NavLink>
-
 						<NavLink to='/info' style={({isActive}) => (isActive ? activeLink : {})}>
 							Info
 						</NavLink>
-
 						<NavLink to='/Contact' style={({isActive}) => (isActive ? activeLink : {})}>
 							Contact
 						</NavLink>
 						<NavLink to='/news' style={({isActive}) => (isActive ? activeLink : {})}>
 							News
 						</NavLink>
-						{user ? (
+						{/* {user ? (
 							<NavLink to='/myprofile' style={({isActive}) => (isActive ? activeLink : {})}>
 								Settings
 							</NavLink>
 						) : (
 							<></>
-						)}
-
-						{user ? (
-							<></>
+						)} */}
+						{authToken ? (
+							<a
+								style={{cursor: 'pointer'}}
+								onClick={() => {
+									localStorage.removeItem(AUTH_TOKEN);
+									localStorage.removeItem(USER_INFO);
+									toast.success('Logging out...');
+									setTimeout(() => navigate(`/`), 500);
+								}}>
+								logout
+							</a>
 						) : (
 							<NavLink to='/login' style={({isActive}) => (isActive ? activeLink : {})}>
-								Login
+								login
 							</NavLink>
 						)}
+
 						<p>
 							{/* {user ? (
                             <button

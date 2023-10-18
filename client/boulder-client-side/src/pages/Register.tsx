@@ -58,13 +58,14 @@ const Register = () => {
 						<label htmlFor='password'>Password</label>
 						<input className='authFormInput' type='password' name='password' value={registerPassword} onChange={(e) => setPassword(e.target.value)} />
 					</div>
+					<span />
 					<button className='authFormBtn' type='submit'>
 						Signup
 					</button>
 				</form>
 
 				<p>
-					Not a user? <NavLink to='/Login'>Login</NavLink>
+					Not a user? <NavLink to='/login'>Login</NavLink>
 				</p>
 			</div>
 		</div>

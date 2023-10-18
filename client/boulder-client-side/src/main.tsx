@@ -7,6 +7,7 @@ import WithNav from './layout/WithNav.tsx';
 import {Outlet, RouterProvider, createBrowserRouter} from 'react-router-dom';
 import {AuthContextProvider} from './contexts/AuthContext.tsx';
 import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Error404 from './pages/Error404.tsx';
 import Homepage from './pages/Homepage.tsx';
 import Footer from './layout/Footer.tsx';
@@ -25,7 +26,6 @@ const router = createBrowserRouter([
 	{
 		element: (
 			<AuthContextProvider>
-				<ToastContainer style={{}} />
 				<Outlet />
 			</AuthContextProvider>
 		),
@@ -36,7 +36,7 @@ const router = createBrowserRouter([
 				element: (
 					<>
 						<WithNav>
-							<ToastContainer style={{}} />
+							<ToastContainer position='bottom-right' />
 							<Outlet />
 						</WithNav>
 						<Footer />
@@ -52,7 +52,7 @@ const router = createBrowserRouter([
 						element: <News />,
 					},
 					{
-						path: '/register',
+						path: '/signup',
 						element: <Register />,
 					},
 					{

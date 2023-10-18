@@ -50,13 +50,15 @@ const Login = () => {
 							<label htmlFor='password'>Password</label>
 							<input className='authFormInput' type='password' name='password' value={loginPassword} onChange={(e) => setPassword(e.target.value)} />
 						</div>
+						<span />
+
 						<button className='authFormBtn' type='submit'>
 							Login
 						</button>
 					</form>
 
 					<p>
-						Not a user? <NavLink to='/register'>Sign Up</NavLink>
+						Not a user? <NavLink to='/signup'>Sign Up</NavLink>
 					</p>
 				</div>
 			</div>

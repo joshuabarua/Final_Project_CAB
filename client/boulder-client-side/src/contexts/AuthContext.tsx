@@ -44,7 +44,7 @@ export const AuthContext = createContext<DefaultValue>(initialValue);
 export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 	const baseURL = import.meta.env.VITE_SERVER_BASE as string;
 	const [user, setUser] = useState<null | User>(null);
-	const redirect = useNavigate();
+	const navigate = useNavigate();
 
 	const [registerMutationFunc, {loading}] = useMutation<RegisterData, RegisterVariables>(REGISTER_USER);
 	const register = async ({registerEmail, registerPassword, registerName}: RegisterVariables) => {
@@ -61,10 +61,11 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 				onCompleted: (userData) => {
 					console.log('register variable', userData);
 					const {user, token} = userData.register;
+					localStorage.setItem('user', JSON.stringify(user));
 					setUser(user);
 					localStorage.setItem('token', token);
 					toast.success('Signup Successful, logging in...');
-					// setTimeout(() => redirect('/'), 2000);
+					setTimeout(() => navigate('/'), 1000);
 				},
 				onError: (error: Error) => {
 					toast.error(`Something went wrong - ${error.message}`);
@@ -76,7 +77,7 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 		}
 	};
 
-	const [loginMutationFunc, {data, error: loginError, loading: loginLoading}] = useMutation<LoginData, LoginVariables>(LOGIN_USER);
+	const [loginMutationFunc, {error: loginError, loading: loginLoading}] = useMutation<LoginData, LoginVariables>(LOGIN_USER);
 	const login = async ({loginEmail, loginPassword}: LoginVariables) => {
 		try {
 			const result = await loginMutationFunc({
@@ -86,14 +87,16 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 			if (loginError) {
 				toast.error(`Something went wrong - ${loginError.message}`);
 			}
+			if (loginLoading) {
+				console.log(loginLoading);
+			}
 
-			console.log(loginLoading, result, data);
 			const {user, token} = result.data!.login;
 			localStorage.setItem('token', token);
 			localStorage.setItem('user', JSON.stringify(user));
 			toast.success('Login Successful');
 			setUser(user);
-			// setTimeout(() => redirect('/'), 2000);
+			setTimeout(() => navigate('/'), 1000);
 		} catch (error) {
 			toast.error(`Something went wrong - ${error}`);
 		}
@@ -118,7 +121,7 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 				if (response.ok) {
 					const result = (await response.json()) as SignupResult;
 					toast.success(' Successful, updating user...');
-					setTimeout(() => redirect('/myprofile'), 2000);
+					setTimeout(() => navigate('/myprofile'), 2000);
 
 					setUser(result.user);
 				} else {
@@ -139,29 +142,25 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 		toast.success('Logging out... Cya!');
 	};
 
-	// const getActiveUser = async () => {
-	// 	const token = getToken();
-	// 	if (token) {
-	// 		try {
-	// 			const myHeaders = new Headers({Authorization: `Bearer ${token}`});
-	// 			const requestOptions = {
-	// 				method: 'GET',
-	// 				headers: myHeaders,
-	// 			};
-	// 			const response = await fetch(`${baseURL}api/users/me`, requestOptions);
-	// 			const result = (await response.json()) as User;
-	// 			setUser(result);
-	// 		} catch (error) {
-	// 			toast.error(error as string);
-	// 			console.log(error);
-	// 		}
-	// 	} else {
-	// 		setUser(null);
-	// 	}
-	// };
+	//TODO:  This getctiveUser needs  fixing to work  with graphql. currently  not as good as it needs to be
+
+	const getActiveUser = async () => {
+		const token = getToken();
+		if (token && user) {
+			try {
+				console.log('user: ', user);
+			} catch (error) {
+				toast.error(error as string);
+				console.log(error);
+			}
+		} else {
+			console.log('No User or Token');
+			setUser(null);
+		}
+	};
 
 	useEffect(() => {
-		// getActiveUser().catch((e) => console.log(e));
+		getActiveUser().catch((e) => console.log(e));
 	}, []);
 
 	return <AuthContext.Provider value={{user, setUser, register, login, logout, update}}>{children}</AuthContext.Provider>;
