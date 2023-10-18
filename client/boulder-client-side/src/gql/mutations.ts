@@ -15,7 +15,7 @@ export const LOGIN_USER = gql`
 		login(email: $loginEmail, password: $loginPassword) {
 			token
 			user {
-				...UserLoginFields
+				...UserFields
 			}
 		}
 	}
@@ -27,7 +27,7 @@ export const REGISTER_USER = gql`
 		register(email: $registerEmail, password: $registerPassword, name: $registerName) {
 			token
 			user {
-				...UserRegisterFields
+				...UserFields
 			}
 		}
 	}
