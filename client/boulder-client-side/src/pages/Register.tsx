@@ -1,20 +1,21 @@
-import React from 'react';
 import {FormEvent, useContext, useState} from 'react';
 import {NavLink} from 'react-router-dom';
 // import {Users} from '../@types';
 import {AuthContext} from '../contexts/AuthContext';
+import {RegisterVariables} from '../@types';
 
 const Register = () => {
 	const {register} = useContext(AuthContext);
 	// const [users, setUsers] = useState<Users>([]);
 
-	const [email, setEmail] = useState('');
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
+	const [registerEmail, setEmail] = useState('');
+	const [registerName, setName] = useState('');
+	const [registerPassword, setPassword] = useState('');
+	const registerVariables: RegisterVariables = {registerEmail, registerPassword, registerName};
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		register(email, username, password).catch((e: Error) => console.log(e));
+		register(registerVariables).catch((e: Error) => console.log(e));
 	};
 
 	return (
@@ -47,15 +48,15 @@ const Register = () => {
 					}}>
 					<div className={'formStyles'}>
 						<label htmlFor='username'>Username</label>
-						<input className='authFormInput' value={username} name='username' onChange={(e) => setUsername(e.target.value)} />
+						<input className='authFormInput' value={registerName} name='username' onChange={(e) => setName(e.target.value)} />
 					</div>
 					<div className={'formStyles'}>
 						<label htmlFor='email'>Email</label>
-						<input className='authFormInput' value={email} name='email' onChange={(e) => setEmail(e.target.value)} />
+						<input className='authFormInput' value={registerEmail} name='email' onChange={(e) => setEmail(e.target.value)} />
 					</div>
 					<div className={'formStyles'}>
 						<label htmlFor='password'>Password</label>
-						<input className='authFormInput' type='password' name='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+						<input className='authFormInput' type='password' name='password' value={registerPassword} onChange={(e) => setPassword(e.target.value)} />
 					</div>
 					<button className='authFormBtn' type='submit'>
 						Signup

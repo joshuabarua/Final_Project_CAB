@@ -44,7 +44,7 @@ const Login = () => {
 						}}>
 						<div className={'formStyles'}>
 							<label htmlFor='email'>Email</label>
-							<input className='authFormInput' value={loginPassword} name='email' onChange={(e) => setEmail(e.target.value)} />
+							<input className='authFormInput' value={loginEmail} name='email' onChange={(e) => setEmail(e.target.value)} />
 						</div>
 						<div className={'formStyles'}>
 							<label htmlFor='password'>Password</label>

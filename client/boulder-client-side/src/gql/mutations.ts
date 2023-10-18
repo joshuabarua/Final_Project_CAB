@@ -15,7 +15,7 @@ export const LOGIN_USER = gql`
 		login(email: $loginEmail, password: $loginPassword) {
 			token
 			user {
-				...UserFields
+				...UserLoginFields
 			}
 		}
 	}
@@ -23,17 +23,15 @@ export const LOGIN_USER = gql`
 `;
 
 export const REGISTER_USER = gql`
-	mutation RegisterUser($registerEmail: String!, $registerPassword: String!, $name: String!) {
-		register(email: $registerEmail, password: $registerPassword, name: $name) {
+	mutation RegisterUser($registerEmail: String!, $registerPassword: String!, $registerName: String!) {
+		register(email: $registerEmail, password: $registerPassword, name: $registerName) {
 			token
 			user {
-				_id
-				email
-				name
-				createdAt
+				...UserRegisterFields
 			}
 		}
 	}
+	${USER_FIELDS}
 `;
 
 export const DELETE_USER = gql`

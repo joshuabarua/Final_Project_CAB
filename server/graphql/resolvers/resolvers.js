@@ -94,7 +94,7 @@ const resolvers = {
 		},
 
 		async register(_, args) {
-			const {email, password, name} = args.newUserData;
+			const {email, password, name} = args;
 			// Validate the input
 			if (!email || !password || !name) {
 				throw new Error('Please fill out all fields', {
@@ -109,13 +109,14 @@ const resolvers = {
 					password: hashedPassword,
 					name,
 				});
+				console.log(newUser);
 
 				const result = await newUser.save();
 				const token = generateToken(newUser);
 				const forFront = {
 					email: result.email,
 					name: result.name,
-					password: result.password,
+					createdAt: result.createdAt,
 					_id: result._id,
 				};
 				return {

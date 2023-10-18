@@ -9,11 +9,6 @@ export interface User {
 
 export type Users = User[];
 
-export interface LatLongLocation {
-	latitude: number;
-	longitude: number;
-}
-
 export interface NotOk {
 	error: string;
 }
@@ -107,7 +102,20 @@ export type LoginData = {
 	};
 };
 
-export type LoginVariables = {
+export interface LoginVariables {
 	loginEmail: string;
 	loginPassword: string;
+}
+
+export interface RegisterVariables {
+	registerEmail: string;
+	registerPassword: string;
+	registerName: string;
+}
+
+export type RegisterData = {
+	register: {
+		token: string;
+		user: User;
+	};
 };

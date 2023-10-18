@@ -44,7 +44,7 @@ const typeDefs = gql`
 		addBooking(newBookingData: AddBookingInput!): Booking
 		deleteUser(_id: ID!): User
 		login(email: String!, password: String!): AuthPayload
-		register(newUserData: AddUserInput!): AuthPayload
+		register(name: String!, password: String!, email: String!): AuthPayload
 	}
 
 	input AddUserInput {

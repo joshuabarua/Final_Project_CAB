@@ -1,16 +1,16 @@
 import {createContext, useState, ReactNode, useEffect} from 'react';
-import {LoginData, LoginVariables, NotOk, User} from '../@types';
+import {LoginData, LoginVariables, NotOk, RegisterData, RegisterVariables, User} from '../@types';
 import {toast} from 'react-toastify';
 import {useNavigate} from 'react-router-dom';
 import getToken from '../utils/getToken';
-import {LOGIN_USER} from '../gql/mutations.js';
+import {LOGIN_USER, REGISTER_USER} from '../gql/mutations.js';
 import {useMutation} from '@apollo/client';
 
 interface DefaultValue {
 	user: null | User;
 	setUser: React.Dispatch<React.SetStateAction<User | null>>;
 	login: ({loginEmail, loginPassword}: LoginVariables) => Promise<void>;
-	register: (email: string, password: string, name: string) => Promise<void>;
+	register: ({registerEmail, registerPassword, registerName}: RegisterVariables) => Promise<void>;
 	update: (updateFields: {email: string; password: string; name: string}) => void;
 	logout: () => void;
 }
@@ -46,32 +46,56 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 	const [user, setUser] = useState<null | User>(null);
 	const redirect = useNavigate();
 
-	const register = async (email: string, password: string, name: string) => {
-		const formData = new FormData();
-		formData.append('name', name);
-		formData.append('email', email);
-		formData.append('password', password);
-
-		const requestOptions = {
-			method: 'POST',
-			body: formData,
-		};
+	const [registerMutationFunc, {loading}] = useMutation<RegisterData, RegisterVariables>(REGISTER_USER);
+	const register = async ({registerEmail, registerPassword, registerName}: RegisterVariables) => {
 		try {
-			const response = await fetch(`${baseURL}api/users/new`, requestOptions);
-			if (response.ok) {
-				const result = (await response.json()) as SignupResult;
-				const {token} = result as SignupResult;
-				localStorage.setItem('token', token);
-				localStorage.setItem('user', JSON.stringify(result.user));
-				toast.success('Signup Successful, logging in...');
-				setUser(result.user);
-				setTimeout(() => redirect('/'), 2000);
-			} else {
-				const result = (await response.json()) as NotOk;
-				toast.error(`Something went wrong - ${result.error}`);
+			if (loading) {
+				console.log(loading);
 			}
+			const result = await registerMutationFunc({
+				variables: {
+					registerEmail,
+					registerPassword,
+					registerName,
+				},
+				onCompleted: (userData) => {
+					console.log('register variable', userData);
+					const {user, token} = userData.register;
+					setUser(user);
+					localStorage.setItem('token', token);
+					toast.success('Signup Successful, logging in...');
+					// setTimeout(() => redirect('/'), 2000);
+				},
+				onError: (error: Error) => {
+					toast.error(`Something went wrong - ${error.message}`);
+				},
+			});
+			console.log(result);
 		} catch (e) {
 			toast.error(` ${e as Error}`);
+		}
+	};
+
+	const [loginMutationFunc, {data, error: loginError, loading: loginLoading}] = useMutation<LoginData, LoginVariables>(LOGIN_USER);
+	const login = async ({loginEmail, loginPassword}: LoginVariables) => {
+		try {
+			const result = await loginMutationFunc({
+				variables: {loginEmail, loginPassword},
+			});
+
+			if (loginError) {
+				toast.error(`Something went wrong - ${loginError.message}`);
+			}
+
+			console.log(loginLoading, result, data);
+			const {user, token} = result.data!.login;
+			localStorage.setItem('token', token);
+			localStorage.setItem('user', JSON.stringify(user));
+			toast.success('Login Successful');
+			setUser(user);
+			// setTimeout(() => redirect('/'), 2000);
+		} catch (error) {
+			toast.error(`Something went wrong - ${error}`);
 		}
 	};
 
@@ -113,30 +137,6 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 		setUser(null);
 		localStorage.removeItem('token');
 		toast.success('Logging out... Cya!');
-	};
-
-	const [loginMutationFunc, {data: loginData, error: loginError, loading: loginLoading}] = useMutation<LoginData, LoginVariables>(LOGIN_USER);
-	const login = async ({loginEmail, loginPassword}: LoginVariables) => {
-		try {
-			const result = await loginMutationFunc({
-				variables: {loginEmail, loginPassword},
-			});
-			console.log(loginData, loginLoading);
-
-			if (loginError) {
-				toast.error(`Something went wrong - ${loginError.message}`);
-			}
-			if (result.data) {
-				const token = result.data.login.token;
-				localStorage.setItem('token', token);
-				localStorage.setItem('user', JSON.stringify(result.data.login.user));
-				toast.success('Login Successful');
-				setUser(result.data.login.user);
-				setTimeout(() => redirect('/'), 2000);
-			}
-		} catch (error) {
-			toast.error(`Something went wrong - ${error}`);
-		}
 	};
 
 	// const getActiveUser = async () => {
