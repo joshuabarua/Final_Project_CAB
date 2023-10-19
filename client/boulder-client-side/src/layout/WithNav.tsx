@@ -1,5 +1,6 @@
 import {} from 'react';
 import Nav from './Nav';
+import Footer from './Footer';
 
 type Props = {
 	children: React.ReactNode;
@@ -17,9 +18,10 @@ const WithNav = (props: Props) => {
 	// const [scrollNav, setScrollNav] = useState(false);
 
 	return (
-		<div style={navWrapperStyles}>
+		<div id={'withNavWrapper'} style={navWrapperStyles}>
 			<Nav />
 			{props.children}
+			<Footer />
 		</div>
 	);
 };

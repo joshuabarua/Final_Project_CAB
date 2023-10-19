@@ -16,6 +16,7 @@ import Register from './pages/Register.tsx';
 import Login from './pages/Login.tsx';
 import Info from './pages/Info.tsx';
 import Contact from './pages/Contact.tsx';
+import CardSelection from './pages/CardSelection.tsx';
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 	cache,
@@ -39,7 +40,6 @@ const router = createBrowserRouter([
 							<ToastContainer position='bottom-right' />
 							<Outlet />
 						</WithNav>
-						<Footer />
 					</>
 				),
 				children: [
@@ -67,10 +67,10 @@ const router = createBrowserRouter([
 						path: '/contact',
 						element: <Contact />,
 					},
-					// {
-					// 	path: '/myprofile',
-					// 	element: <Profile />,
-					// },
+					{
+						path: '/bookingSelection',
+						element: <CardSelection />,
+					},
 				],
 			},
 			{

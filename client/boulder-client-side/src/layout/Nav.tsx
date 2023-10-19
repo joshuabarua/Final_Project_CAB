@@ -71,51 +71,53 @@ const Nav = () => {
 	};
 
 	return (
-		<>
-			<nav style={navStyles}>
-				<div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', width: '100%'}}>
-					<div>
-						<h1>Logo</h1>
-					</div>
-					<div style={linksContainerStyles}>
-						<NavLink to='/' style={({isActive}) => (isActive ? activeLink : {})}>
-							Home
-						</NavLink>
-						<NavLink to='/info' style={({isActive}) => (isActive ? activeLink : {})}>
-							Info
-						</NavLink>
-						<NavLink to='/Contact' style={({isActive}) => (isActive ? activeLink : {})}>
-							Contact
-						</NavLink>
-						<NavLink to='/news' style={({isActive}) => (isActive ? activeLink : {})}>
-							News
-						</NavLink>
-						{/* {user ? (
+		<nav style={navStyles}>
+			<div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', width: '100%'}}>
+				<div>
+					<h1>Logo</h1>
+				</div>
+				<div style={linksContainerStyles}>
+					<NavLink to='/' style={({isActive}) => (isActive ? activeLink : {})}>
+						Home
+					</NavLink>
+					<NavLink to='/bookingSelection' style={({isActive}) => (isActive ? activeLink : {})}>
+						Book
+					</NavLink>
+					<NavLink to='/info' style={({isActive}) => (isActive ? activeLink : {})}>
+						Info
+					</NavLink>
+					<NavLink to='/Contact' style={({isActive}) => (isActive ? activeLink : {})}>
+						Contact
+					</NavLink>
+					<NavLink to='/news' style={({isActive}) => (isActive ? activeLink : {})}>
+						News
+					</NavLink>
+					{/* {user ? (
 							<NavLink to='/myprofile' style={({isActive}) => (isActive ? activeLink : {})}>
 								Settings
 							</NavLink>
 						) : (
 							<></>
 						)} */}
-						{authToken ? (
-							<a
-								style={{cursor: 'pointer'}}
-								onClick={() => {
-									localStorage.removeItem(AUTH_TOKEN);
-									localStorage.removeItem(USER_INFO);
-									toast.success('Logging out...');
-									setTimeout(() => navigate(`/`), 500);
-								}}>
-								logout
-							</a>
-						) : (
-							<NavLink to='/login' style={({isActive}) => (isActive ? activeLink : {})}>
-								login
-							</NavLink>
-						)}
+					{authToken ? (
+						<a
+							style={{cursor: 'pointer'}}
+							onClick={() => {
+								localStorage.removeItem(AUTH_TOKEN);
+								localStorage.removeItem(USER_INFO);
+								toast.success('Logging out...');
+								setTimeout(() => navigate(`/`), 500);
+							}}>
+							logout
+						</a>
+					) : (
+						<NavLink to='/login' style={({isActive}) => (isActive ? activeLink : {})}>
+							Login
+						</NavLink>
+					)}
 
-						<p>
-							{/* {user ? (
+					<p>
+						{/* {user ? (
                             <button
 							onClick={() => {
                                 logout();
@@ -125,12 +127,11 @@ const Nav = () => {
                             ) : (
                                 'Please Login...'
                             )} */}
-						</p>
-						<p>{user ? <img src={`${user.image_url}`} className='navProfilePic' style={{border: 'solid 1px rgba(0,0,0,0.2)'}} /> : <></>}</p>
-					</div>
+					</p>
+					<p>{user ? <img src={`${user.image_url}`} className='navProfilePic' style={{border: 'solid 1px rgba(0,0,0,0.2)'}} /> : <></>}</p>
 				</div>
-			</nav>
-		</>
+			</div>
+		</nav>
 	);
 };
 

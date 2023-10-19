@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom';
 import getToken from '../utils/getToken';
 import {LOGIN_USER, REGISTER_USER} from '../gql/mutations.js';
 import {useMutation} from '@apollo/client';
+import {AUTH_TOKEN, USER_INFO} from '../constants.js';
 
 interface DefaultValue {
 	user: null | User;
@@ -138,8 +139,10 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 
 	const logout = () => {
 		setUser(null);
-		localStorage.removeItem('token');
-		toast.success('Logging out... Cya!');
+		localStorage.removeItem(AUTH_TOKEN);
+		localStorage.removeItem(USER_INFO);
+		toast.success('Logging out...');
+		setTimeout(() => navigate(`/`), 500);
 	};
 
 	//TODO:  This getctiveUser needs  fixing to work  with graphql. currently  not as good as it needs to be

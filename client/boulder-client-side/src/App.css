@@ -53,6 +53,7 @@
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	width: 100vw;
 }
 
 .formStyles {
@@ -74,6 +75,58 @@
 	width: 30%;
 	max-width: 100px;
 	border-radius: 5px;
+}
+
+/* CardSelection Page */
+
+.card {
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 20px;
+	margin: 10px;
+	cursor: pointer;
+	transition: transform 0.2s;
+}
+
+.card h2 {
+	font-size: 1.5rem;
+	margin-bottom: 10px;
+}
+
+.card p {
+	font-size: 1rem;
+	color: #666;
+}
+
+/* Selected card styles */
+.selected {
+	border: 2px solid #007bff; /* Highlight with blue border when selected */
+	transform: scale(1.05); /* Slightly scale up when selected */
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+/* Selected card content */
+.selected-card-content {
+	margin-top: 20px;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: #f9f9f9;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.selected-card-content button {
+	background-color: #007bff;
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 1rem;
+}
+
+.selected-card-content button:hover {
+	background-color: #0056b3;
 }
 
 @keyframes logo-spin {
