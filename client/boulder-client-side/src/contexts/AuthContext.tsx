@@ -143,7 +143,6 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 	};
 
 	//TODO:  This getctiveUser needs  fixing to work  with graphql. currently  not as good as it needs to be
-
 	const getActiveUser = async () => {
 		const token = getToken();
 		if (token && user) {
@@ -160,7 +159,7 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 	};
 
 	useEffect(() => {
-		getActiveUser().catch((e) => console.log(e));
+		// getActiveUser().catch((e) => console.log(e));
 	}, []);
 
 	return <AuthContext.Provider value={{user, setUser, register, login, logout, update}}>{children}</AuthContext.Provider>;
