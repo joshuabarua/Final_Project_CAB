@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-
+import {useNavigate} from 'react-router-dom';
 const EventBookingCards: React.FC = () => {
 	const [selectedCard, setSelectedCard] = useState<number | null>(null);
+	const navigate = useNavigate();
 
 	const handleCardSelect = (cardNumber: number) => {
 		setSelectedCard(cardNumber);
@@ -14,11 +15,10 @@ const EventBookingCards: React.FC = () => {
 			<div className='centeredDivRow' style={{gap: '10px'}}>
 				<div className={`card ${selectedCard === 1 ? 'selected' : ''}`} onClick={() => handleCardSelect(1)}>
 					<h2>One-Time Card</h2>
-					<p>Generates a voucher code for immediate use.</p>
+					<p>Generates a boulder token for use with booking.</p>
 					{selectedCard === 1 && (
 						<div className='selected-card-content'>
-							{/* Render content for the One-Time Card */}
-							<button onClick={() => {}}>Book Now</button>
+							<button onClick={() => navigate(`/getTokens?tokens=${1}`)}>Buy 1 boulder token</button>
 						</div>
 					)}
 				</div>
@@ -28,12 +28,7 @@ const EventBookingCards: React.FC = () => {
 					<p>Creates 10 voucher codes for 10 sessions, useable whenever you need them most.</p>
 					{selectedCard === 2 && (
 						<div className='selected-card-content'>
-							<button
-								onClick={() => {
-									/* Navigate to payment page for 10 sessions */
-								}}>
-								Pay for 10 Sessions
-							</button>
+							<button onClick={() => navigate(`/getTokens?tokens=${10}`)}>Pay for 10 Sessions</button>
 						</div>
 					)}
 				</div>

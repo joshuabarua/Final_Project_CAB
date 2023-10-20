@@ -42,6 +42,9 @@ export const DELETE_USER = gql`
 	}
 `;
 
+//Create Voucher mutation
+// export const CREATE_VOUCHER_MUTATION = gql``;
+
 //Queries
 export const GET_CURRENT_USER = gql`
 	query CurrentUser {
