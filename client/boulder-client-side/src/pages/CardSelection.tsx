@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 
-// Define the component
 const EventBookingCards: React.FC = () => {
 	const [selectedCard, setSelectedCard] = useState<number | null>(null);
 
@@ -24,13 +23,11 @@ const EventBookingCards: React.FC = () => {
 					)}
 				</div>
 
-				{/* 10er Card */}
 				<div className={`card ${selectedCard === 2 ? 'selected' : ''}`} onClick={() => handleCardSelect(2)}>
 					<h2>10er Card</h2>
 					<p>Creates 10 voucher codes for 10 sessions, useable whenever you need them most.</p>
 					{selectedCard === 2 && (
 						<div className='selected-card-content'>
-							{/* Render content for the 10er Card */}
 							<button
 								onClick={() => {
 									/* Navigate to payment page for 10 sessions */
@@ -41,13 +38,11 @@ const EventBookingCards: React.FC = () => {
 					)}
 				</div>
 
-				{/* Monthly Card */}
 				<div className={`card ${selectedCard === 3 ? 'selected' : ''}`} onClick={() => handleCardSelect(3)}>
 					<h2>Monthly Card</h2>
 					<p>Represents a monthly subscription plan.</p>
 					{selectedCard === 3 && (
 						<div className='selected-card-content'>
-							{/* Render content for the Monthly Card */}
 							<button
 								onClick={() => {
 									/* Navigate to payment page for 10 sessions */
@@ -58,8 +53,6 @@ const EventBookingCards: React.FC = () => {
 					)}
 				</div>
 			</div>
-
-			{/* Display relevant content based on the selected card */}
 		</div>
 	);
 };
