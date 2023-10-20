@@ -4,8 +4,27 @@
 	font-weight: 400;
 
 	color-scheme: light dark;
-	color: rgba(255, 255, 255, 0.87);
-	background-color: #242424;
+
+	--dominant-color: #ddfff7;
+	--secondary-color: #93e1d8;
+	--accent-color: #ffa69e;
+
+	--background-light: #ffffff; /* Light mode background color */
+	--text-light: #333333; /* Light mode text color */
+	--content-light: #87ceeb; /* Light mode primary content color */
+	--links-light: #007bff; /* Light mode link color */
+	--buttons-light: #f9f9f9; /* Light mode button color */
+
+	--background-dark: #121212; /* Dark mode background color */
+	--text-dark: #f5f5f5; /* Dark mode text color */
+	--content-dark: #4682b4; /* Dark mode primary content color */
+	--links-dark: #4b0082; /* Dark mode link color */
+	--buttons-dark: #333333; /* Dark mode button color */
+
+	--accent-color: #ffa69e; /* Accent color for both modes */
+
+	background-color: var(--background-dark);
+	color: var(--text-dark);
 
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
@@ -16,20 +35,28 @@
 
 @media (prefers-color-scheme: light) {
 	:root {
-		color: #213547;
-		background-color: #ffffff;
+		body {
+			background-color: var(--background-light);
+			color: var(--text-light);
+		}
 	}
-	a:hover {
-		color: #747bff;
+	a,
+	a:visited {
+		color: var(--links-light); /* Use the accent color variable */
 	}
 	button {
-		background-color: #f9f9f9;
+		background-color: var(--buttons-light); /* Use the secondary color variable */
 	}
 }
 
+a,
+a:visited {
+	--text-color: #213547;
+	text-decoration: none;
+}
+
 #root {
-	margin: 0 auto;
-	padding: 2rem;
+	overflow-y: hidden;
 	text-align: center;
 	display: flex;
 }
@@ -80,17 +107,21 @@
 /* CardSelection Page */
 
 .card {
+	background-color: var(--dominant-color); /* Use the dominant color variable for background */
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	padding: 20px;
 	margin: 10px;
 	cursor: pointer;
 	transition: transform 0.2s;
+	width: 33%;
+	height: 30vh;
 }
 
 .card h2 {
 	font-size: 1.5rem;
 	margin-bottom: 10px;
+	color: #666;
 }
 
 .card p {
@@ -100,7 +131,7 @@
 
 /* Selected card styles */
 .selected {
-	border: 2px solid #007bff; /* Highlight with blue border when selected */
+	border-bottom: 2px solid var(--accent-color); /* Use the accent color variable for border */
 	transform: scale(1.05); /* Slightly scale up when selected */
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
 }
@@ -109,15 +140,11 @@
 .selected-card-content {
 	margin-top: 20px;
 	padding: 20px;
-	border: 1px solid #ccc;
 	border-radius: 5px;
-	background-color: #f9f9f9;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .selected-card-content button {
-	background-color: #007bff;
-	color: #fff;
+	background-color: var(--accent-color);
 	padding: 10px 20px;
 	border: none;
 	border-radius: 5px;
@@ -126,7 +153,8 @@
 }
 
 .selected-card-content button:hover {
-	background-color: #0056b3;
+	transition: ease-in-out 0.3s;
+	transform: scale(1.2); /* Slightly scale up when selected */
 }
 
 @keyframes logo-spin {

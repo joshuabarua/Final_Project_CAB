@@ -29,9 +29,9 @@ const Footer = () => {
 					<div>
 						<p>Home | Downloads | Impressum</p>
 					</div>
-					<div>
+					<div style={{display: 'flex', gap: '10px', justifyContent: 'center'}}>
 						<a href='https://www.instagram.com/bouldergarten' target='_blank'>
-							<FontAwesomeIcon icon={faInstagram} size='xl' style={{color: '#e42baf'}} />{' '}
+							<FontAwesomeIcon icon={faInstagram} size='xl' style={{color: '#e42baf'}} />
 						</a>
 						<a href='https://www.facebook.com/bouldergarten/' target='_blank'>
 							<FontAwesomeIcon icon={faFacebook} size='xl' style={{color: '#5c93f6'}} />

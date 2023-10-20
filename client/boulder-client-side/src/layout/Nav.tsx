@@ -32,6 +32,7 @@ const Nav = () => {
 		position: 'fixed', // Make sure to enclose position in quotes
 		transition: '0.4s ease-in-out', // Make sure to enclose transition in quotes
 		top: isMouseMoving ? '0' : '-20%', // Make sure to enclose top in quotes: ;
+		left: '0px',
 	};
 
 	const linksContainerStyles: React.CSSProperties = {
@@ -43,7 +44,7 @@ const Nav = () => {
 	};
 
 	const activeLink: React.CSSProperties = {
-		color: 'red',
+		color: 'rgb(149, 206, 200)',
 		fontWeight: 'bold',
 	};
 

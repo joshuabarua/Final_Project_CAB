@@ -10,7 +10,6 @@ import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Error404 from './pages/Error404.tsx';
 import Homepage from './pages/Homepage.tsx';
-import Footer from './layout/Footer.tsx';
 import News from './pages/News.tsx';
 import Register from './pages/Register.tsx';
 import Login from './pages/Login.tsx';
