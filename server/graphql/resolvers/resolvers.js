@@ -1,49 +1,86 @@
 import userModel from '../../models/userModel.js';
-import bookingModel from '../../models/bookingModel.js';
+import timeslotModel from '../../models/timeslotModel.js';
 import {generateToken} from '../../utils/jwt.js';
 import {verifyPassword, encryptPassword} from '../../utils/bcrypt.js';
+import voucherModel from '../../models/voucherModel.js';
 
 const resolvers = {
 	Query: {
 		async users(_, __, ___, info) {
+			console.log('info :>> '.bgMagenta, info);
 			const users = await userModel.find();
 			return users;
 		},
 
-		async bookings(parent, args, contextValue, info) {
+		async timeslots(parent, args, contextValue, info) {
 			console.log('contextValue :>> '.bgMagenta, contextValue);
-			return await bookingModel.find();
+			return await timeslotModel.find();
+		},
+
+		async vouchers(parent, args, contextValue, info) {
+			console.log('contextValue :>> '.bgMagenta, contextValue);
+			return await voucherModel.find();
 		},
 
 		async user(parent, args, contextValue) {
 			console.log('args :>> '.bgYellow, args);
 			console.log('contextValue :>> '.bgMagenta, contextValue);
-
 			return userModel.findById(args.id);
 		},
-		async booking(_, args) {
+
+		async timeslot(_, args) {
 			console.log('args :>> '.bgYellow, args);
-			return bookingModel.findById(args.id);
+			return timeslotModel.findById(args.id);
+		},
+
+		async voucher(_, args) {
+			console.log('args :>> '.bgYellow, args);
+			return voucherModel.findById(args.id);
 		},
 	},
 
 	User: {
-		async assignedBooking(parent) {
-			console.log('parent :>> '.bgYellow, parent);
-			const bookingId = parent.assignedBooking;
+		async assignedBookings(parent) {
+			const bookedSessions = parent.assignedBookings;
+			console.log('parent :>> '.bgBlue, bookedSessions);
+			const bookingsArray = bookedSessions.map(async (bookingId) => {
+				return await timeslotModel.findById(bookingId);
+			});
+			return bookingsArray;
+		},
 
-			return bookingModel.findById(bookingId);
+		async vouchers(parent) {
+			const vouchersModel = parent.vouchers;
+			console.log('parent :>> '.bgBlue, vouchersModel);
+			const vouchersArr = vouchersModel.map(async (voucherId) => {
+				return await voucherModel.findById(voucherId);
+			});
+			return vouchersArr;
 		},
 	},
 
-	Booking: {
-		async assignedTo(parent) {
-			const assignedUsersIDsArray = parent.assignedTo;
-			console.log('assignedUsersIDsArray :>> ', assignedUsersIDsArray);
-			const usersArray = assignedUsersIDsArray.map(async (supId) => {
-				return await userModel.findById(supId);
+	Timeslot: {
+		async userVouchers(parent) {
+			const userVouchers = parent.userVouchers;
+			console.log('userVoucher :>> '.bgBlue, userVouchers);
+			const userVouchersArr = userVouchers.map(async (voucherId) => {
+				return await voucherModel.findById(voucherId);
 			});
-			return usersArray;
+			return userVouchersArr;
+		},
+	},
+
+	Voucher: {
+		async assignedUser(parent) {
+			const userId = parent.assignedUser;
+			console.log('parent :>> '.bgYellow, assignedUser);
+			return userModel.findById(userId);
+		},
+
+		async assignedTimeslot(parent) {
+			const timeslotId = parent.assignedTimeslot;
+			console.log('parent :>> '.bgYellow, timeslotId);
+			return timeslotModel.findById(timeslotId);
 		},
 	},
 
@@ -54,11 +91,11 @@ const resolvers = {
 			});
 			return await newUser.save();
 		},
-		async addBooking(_, args) {
-			const newBooking = new bookingModel({
-				...args.newBookingData,
+		async addTimeslot(_, args) {
+			const newTimeslot = new timeslotModel({
+				...args.newTimeslotData,
 			});
-			return await newBooking.save();
+			return await newTimeslot.save();
 		},
 		async deleteUser(_, args) {
 			return await userModel.findByIdAndRemove(args.id);
@@ -85,6 +122,8 @@ const resolvers = {
 						_id: existingUser._id,
 						email: existingUser.email,
 						name: existingUser.name,
+						bookings: existingUser.bookings,
+						tokens: existingUser.tokens,
 						createdAt: existingUser.createdAt,
 					},
 				};
@@ -108,6 +147,8 @@ const resolvers = {
 					email,
 					password: hashedPassword,
 					name,
+					bookings,
+					tokens,
 				});
 				console.log(newUser);
 
@@ -116,6 +157,8 @@ const resolvers = {
 				const forFront = {
 					email: result.email,
 					name: result.name,
+					bookings: result.bookings,
+					tokens: result.tokens,
 					createdAt: result.createdAt,
 					_id: result._id,
 				};

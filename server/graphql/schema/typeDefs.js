@@ -1,9 +1,6 @@
-// const typeDefs = `#graphql
-// type Superhero {
-// }
 const gql = String.raw;
 
-const typeDefs = gql`
+const typeDefs = `#graphql
 	enum CodeStatus {
 		USED
 		UNUSED
@@ -16,22 +13,33 @@ const typeDefs = gql`
 		name: String!
 		email: String!
 		password: String!
-		assignedBooking: Booking
+		assignedBookings: [Timeslot]
+		vouchers: [Voucher]
 	}
 
-	type Booking {
+	type Timeslot {
 		_id: ID!
 		date: String!
 		time: String!
+		spots: Int!
+		userVouchers: [Voucher]
+	}
+
+	type Voucher {
+		_id: ID!
+		purchaseDate: String!
 		status: CodeStatus!
-		assignedTo: User
+		assignedUser: User
+		assignedTimeslot: Timeslot
 	}
 
 	type Query {
 		users: [User]
-		bookings: [Booking]
+		timeslots: [Timeslot]
+		vouchers: [Voucher]
 		user(_id: ID!): User
-		booking(_id: ID!): Booking
+		timeslot(_id: ID!): Timeslot
+		voucher(_id: ID!): Voucher
 	}
 
 	type AuthPayload {
@@ -41,7 +49,8 @@ const typeDefs = gql`
 
 	type Mutation {
 		addUser(newUserData: AddUserInput!): User
-		addBooking(newBookingData: AddBookingInput!): Booking
+		addTimeslot(newTimeslotData: AddTimeslotInput!): Timeslot
+		addVouchers(numberOfVouchers: Int!): [Voucher]
 		deleteUser(_id: ID!): User
 		login(email: String!, password: String!): AuthPayload
 		register(name: String!, password: String!, email: String!): AuthPayload
@@ -53,12 +62,10 @@ const typeDefs = gql`
 		email: String!
 	}
 
-	input AddBookingInput {
-		name: String!
+	input AddTimeslotInput {
 		date: String!
 		time: String!
-		status: CodeStatus!
+		spots: Int!
 	}
 `;
-
 export {typeDefs};

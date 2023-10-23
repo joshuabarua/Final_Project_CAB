@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useMutation} from '@apollo/client';
 import styles from '../styles/BoulderTokenCreation.module.css';
+import bgImage from '../assets/imgs/pexels-cottonbro-studio-6701740.jpg';
 // import {CREATE_VOUCHER_MUTATION} from '../gql/mutations.js';
 import {NavLink, useLocation} from 'react-router-dom';
 
@@ -55,7 +56,7 @@ const BoulderingTokenCreation = () => {
 			{numberOfTokens && (parseInt(numberOfTokens) === 1 || parseInt(numberOfTokens) === 10) ? (
 				<div className={styles.card}>
 					<div className={styles.leftside}>
-						<img src='/' className={styles.products} alt='Tokens' />
+						<img src={bgImage} className={styles.products} alt='Tokens' />
 					</div>
 					<div className={styles.rightside}>
 						<form action=''>
@@ -90,8 +91,8 @@ const BoulderingTokenCreation = () => {
 								<input type='password' className={styles.inputbox} name='cvv' id='cvv' required />
 							</div>
 							<p></p>
-							<button type='submit' className={styles.button}>
-								CheckOut
+							<button type='submit' className={styles.button} onClick={() => {}}>
+								Check Out
 							</button>
 						</form>
 					</div>
@@ -104,23 +105,6 @@ const BoulderingTokenCreation = () => {
 					</p>
 				</>
 			)}
-
-			{/* <div className={centeredDivCol' style={{height: '80vh', justifyContent: 'space-evenly', gap: '10px'}}>
-				<div>
-					{numberOfTokens && (parseInt(numberOfTokens) === 1 || parseInt(numberOfTokens) === 10) ? (
-						<>
-							<button onClick={() => {}}>Generate Tokens</button>
-							<ul>
-								{tokens.map((token, index) => (
-									<li key={index}>{token}</li>
-								))}
-							</ul>
-						</>
-					) : (
-						<p>Invalid number of tokens</p>
-					)}
-				</div>
-			</div> */}
 		</div>
 	);
 };
