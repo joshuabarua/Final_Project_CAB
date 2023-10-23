@@ -40,6 +40,8 @@ const typeDefs = `#graphql
 		user(_id: ID!): User
 		timeslot(_id: ID!): Timeslot
 		voucher(_id: ID!): Voucher
+		getAssignedVouchers(_id: ID!): [Voucher]
+		getAssignedBookings(_id: ID!): [Timeslot]
 	}
 
 	type AuthPayload {
@@ -50,7 +52,7 @@ const typeDefs = `#graphql
 	type Mutation {
 		addUser(newUserData: AddUserInput!): User
 		addTimeslot(newTimeslotData: AddTimeslotInput!): Timeslot
-		addVouchers(numberOfVouchers: Int!): [Voucher]
+		addVouchers(userId: ID!, numberOfVouchers: Int!): [Voucher]
 		deleteUser(_id: ID!): User
 		login(email: String!, password: String!): AuthPayload
 		register(name: String!, password: String!, email: String!): AuthPayload

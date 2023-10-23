@@ -42,9 +42,6 @@ export const DELETE_USER = gql`
 	}
 `;
 
-//Create Voucher mutation
-// export const CREATE_VOUCHER_MUTATION = gql``;
-
 //Queries
 export const GET_CURRENT_USER = gql`
 	query CurrentUser {
@@ -52,6 +49,51 @@ export const GET_CURRENT_USER = gql`
 			_id
 			email
 			name
+		}
+	}
+`;
+
+export const GET_ALL_TIMESLOTS = gql`
+	query AllTimeslots {
+		timeslots {
+			_id
+			date
+			time
+			spots
+			userVouchers {
+				_id
+			}
+		}
+	}
+`;
+
+export const GET_USER_VOUCHERS = gql`
+	query getUserVouchers($userId: ID!) {
+		user(_id: $userId) {
+			_id
+			vouchers {
+				_id
+				purchaseDate
+				status
+				assignedTimeslot {
+					date
+					time
+				}
+			}
+		}
+	}
+`;
+
+export const GET_USER_ASSIGNED_BOOKINGS = gql`
+	query getAssignedBookings($userId: ID!) {
+		user(_id: $userId) {
+			_id: ID!
+			assignedBookings {
+				_id
+				date: String!
+				time: String!
+				spots: Int!
+			}
 		}
 	}
 `;

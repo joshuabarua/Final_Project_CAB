@@ -73,7 +73,7 @@ const resolvers = {
 	Voucher: {
 		async assignedUser(parent) {
 			const userId = parent.assignedUser;
-			console.log('parent :>> '.bgYellow, assignedUser);
+			console.log('parent :>> '.bgYellow, userId);
 			return userModel.findById(userId);
 		},
 
@@ -97,6 +97,32 @@ const resolvers = {
 			});
 			return await newTimeslot.save();
 		},
+
+		addVouchers: async (_, {userId, numberOfVouchers}) => {
+			const user = await userModel.findById(userId);
+
+			if (!user) {
+				throw new Error('User not found');
+			}
+
+			const vouchers = [];
+			for (let i = 0; i < numberOfVouchers; i++) {
+				const newVoucher = new voucherModel({
+					purchaseDate: new Date().toISOString(),
+					status: 'UNUSED',
+					assignedUser: userId,
+				});
+				const savedVoucher = await newVoucher.save();
+				vouchers.push(savedVoucher);
+			}
+
+			// Update the user's vouchers array
+			user.vouchers = user.vouchers.concat(vouchers);
+			await user.save();
+
+			return vouchers;
+		},
+
 		async deleteUser(_, args) {
 			return await userModel.findByIdAndRemove(args.id);
 		},
@@ -123,7 +149,7 @@ const resolvers = {
 						email: existingUser.email,
 						name: existingUser.name,
 						bookings: existingUser.bookings,
-						tokens: existingUser.tokens,
+						vouchers: existingUser.vouchers,
 						createdAt: existingUser.createdAt,
 					},
 				};
@@ -147,8 +173,6 @@ const resolvers = {
 					email,
 					password: hashedPassword,
 					name,
-					bookings,
-					tokens,
 				});
 				console.log(newUser);
 
@@ -157,8 +181,8 @@ const resolvers = {
 				const forFront = {
 					email: result.email,
 					name: result.name,
-					bookings: result.bookings,
-					tokens: result.tokens,
+					assignedBookings: result.assignedBookings,
+					vouchers: result.vouchers,
 					createdAt: result.createdAt,
 					_id: result._id,
 				};
