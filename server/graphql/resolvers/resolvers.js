@@ -1,6 +1,6 @@
 import userModel from '../../models/userModel.js';
 import timeslotModel from '../../models/timeslotModel.js';
-import {generateToken} from '../../utils/jwt.js';
+import {generateToken} from '../../config/passportConfig.js';
 import {verifyPassword, encryptPassword} from '../../utils/bcrypt.js';
 import voucherModel from '../../models/voucherModel.js';
 
@@ -48,16 +48,21 @@ const resolvers = {
 	User: {
 		async assignedBookings(parent) {
 			const bookedSessions = parent.assignedBookings;
-			console.log('parent :>> '.bgBlue, bookedSessions);
-			const bookingsArray = bookedSessions.map(async (bookingId) => {
-				return await timeslotModel.findById(bookingId);
+			if (!bookedSessions) {
+				console.log('No booked timeslots right now'.bgRed, bookedSessions);
+				// throw new Error('No booked timeslots right now'.bgRed);
+				return null;
+			}
+			console.log('parent.bookedSessions :>> '.bgBlue, bookedSessions);
+			const bookingsArray = bookedSessions.map(async (timeslotId) => {
+				return await timeslotModel.findById(timeslotId);
 			});
 			return bookingsArray;
 		},
 
 		async vouchers(parent) {
 			const vouchersModel = parent.vouchers;
-			console.log('parent :>> '.bgBlue, vouchersModel);
+			console.log('parent.Vouchers :>> '.bgBlue, vouchersModel);
 			const vouchersArr = vouchersModel.map(async (voucherId) => {
 				return await voucherModel.findById(voucherId);
 			});
@@ -131,17 +136,42 @@ const resolvers = {
 			return await userModel.findByIdAndRemove(args.id);
 		},
 
-		//WORKING
-		async login(parent, args, context) {
-			const {email, password} = args;
-			const {user} = await context.authenticate('graphql-local', {email, password});
-			await context.login(user);
-			console.log('user >>:'.bgGreen, user);
-			if (!user) throw new Error('No user with that email.');
-			const token = generateToken(user);
+		//for use with sessions
+		// async login(parent, args, context) {
+		// 	const {email, password} = args;
+		// 	const {user} = await context.authenticate('graphql-local', {email, password});
+		// 	await context.login(user);
+		// 	console.log('user >>:'.bgGreen, user);
+		// 	if (!user) throw new Error('No user with that email.');
+		// 	const token = generateToken(user);
+		// 	return {
+		// 		token,
+		// 		user,
+		// 	};
+		// },
+
+		async login(_, {email, password}) {
+			const existingUser = await userModel.findOne({email});
+			if (!existingUser) {
+				throw new Error('No user with that email.');
+			}
+			const verified = await verifyPassword(password, existingUser.password);
+			if (!verified) {
+				throw new Error("Password doesn't match.");
+			}
+			console.log('User Exists?'.bgYellow, verified, existingUser);
+			const token = generateToken(existingUser);
+			// console.log(token);
 			return {
 				token,
-				user,
+				user: {
+					_id: existingUser._id,
+					email: existingUser.email,
+					name: existingUser.name,
+					bookings: existingUser.bookings,
+					vouchers: existingUser.vouchers,
+					createdAt: existingUser.createdAt,
+				},
 			};
 		},
 
@@ -177,7 +207,8 @@ const resolvers = {
 					createdAt: result.createdAt,
 					_id: result._id,
 				};
-				context.login(newUser);
+				// login(_, {newUser.email, newUser.password}, ___)
+
 				return {
 					token,
 					user: forFront,

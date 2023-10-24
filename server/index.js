@@ -1,50 +1,63 @@
 import express from 'express';
-import session from 'express-session';
-import {v4 as uuidv4} from 'uuid';
+// import session from 'express-session';
+// import {v4 as uuidv4} from 'uuid';
+// import bodyParser from "body-parser";
+// import userModel from './models/userModel.js';
+// import {buildContext} from 'graphql-passport';
+import colors from 'colors';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
-import configurePassport from './config/passportConfig.js';
-import {buildContext} from 'graphql-passport';
 import passport from 'passport';
 dotenv.config();
-import colors from 'colors';
 import connectDB from './config/db.js';
-// import bodyParser from "body-parser";
 import {ApolloServer} from '@apollo/server';
 import {expressMiddleware} from '@apollo/server/express4';
 import {typeDefs} from './graphql/schema/typeDefs.js';
 import {resolvers} from './graphql/resolvers/resolvers.js';
 import userModel from './models/userModel.js';
-
+import {jwtAuth, getPayload, configurePassport} from './config/passportConfig.js';
 dotenv.config();
 
-passport.serializeUser((user, done) => {
-	done(null, user.id);
-});
+//Used with sessions
+// passport.serializeUser((user, done) => {
+// 	done(null, user.id);
+// });
 
-passport.deserializeUser((id, done) => {
-	const user = userModel.findOne({id});
-	done(null, user);
-});
+// passport.deserializeUser((id, done) => {
+// 	const user = userModel.findOne({id});
+// 	done(null, user);
+// });
 
 const app = express();
 
-app.use(
-	session({
-		genid: (req) => uuidv4(),
-		secret: process.env.SESSION_SECRET,
-		resave: false,
-		saveUninitialized: false,
-	})
-);
+//Used with sessions
+// app.use(
+// 	session({
+// 		genid: (req) => uuidv4(),
+// 		secret: process.env.SESSION_SECRET,
+// 		resave: false,
+// 		saveUninitialized: false,
+// 	})
+// );
 
 const addMiddlewares = () => {
 	app.use(passport.initialize());
-	app.use(passport.session());
+	//for session
+	// app.use(passport.session());
+	// app.use(passport.use(new LocalStrategy({email: 'email'}, userModel.authenticate())));
 	app.use(express.json());
 	app.use(express.urlencoded({extended: true}));
 	app.use(cors());
 	configurePassport();
+
+	//TODO: Figure out how to do jwt auth with requests before they hit graphql server
+	// app.use((req, res, next) => {
+	// 	const user = getPayload(req);
+	// 	if (user) {
+	// 		req.user = user; // Add the user to the request object
+	// 	}
+	// 	next();
+	// });
 };
 
 const startServer = async () => {
@@ -58,7 +71,9 @@ const startServer = async () => {
 	app.use(
 		'/graphql',
 		expressMiddleware(server, {
-			context: ({req, res}) => buildContext({req, res}),
+			context: ({req, res}) => {
+				return;
+			},
 			// console.log(`req.headers auth :>> ${req.headers.authorization}`.bgGreen),
 			// console.log(`req.headers token :>> ${req.headers.token}`.bgGreen),
 			// ({

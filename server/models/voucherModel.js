@@ -8,6 +8,7 @@ const VoucherSchema = new mongoose.Schema({
 	status: {
 		type: String,
 		required: true,
+		default: 'VALID',
 		enum: ['USED', 'UNUSED', 'INVALID', 'VALID'],
 	},
 	assignedUser: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
