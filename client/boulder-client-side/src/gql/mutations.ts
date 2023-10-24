@@ -42,6 +42,19 @@ export const DELETE_USER = gql`
 	}
 `;
 
+export const ADD_VOUCHERS = gql`
+	mutation AddVouchers($userId: ID!, $numberOfVouchers: Int!) {
+		addVouchers(userId: $userId, numberOfVouchers: $numberOfVouchers) {
+			_id
+			purchaseDate
+			status
+			assignedUser {
+				_id
+			}
+		}
+	}
+`;
+
 //Queries
 export const GET_CURRENT_USER = gql`
 	query CurrentUser {
@@ -87,12 +100,12 @@ export const GET_USER_VOUCHERS = gql`
 export const GET_USER_ASSIGNED_BOOKINGS = gql`
 	query getAssignedBookings($userId: ID!) {
 		user(_id: $userId) {
-			_id: ID!
+			_id
 			assignedBookings {
 				_id
-				date: String!
-				time: String!
-				spots: Int!
+				date: String
+				time: String
+				spots: Int
 			}
 		}
 	}

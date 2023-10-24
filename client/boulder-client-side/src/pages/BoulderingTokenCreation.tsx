@@ -4,6 +4,7 @@ import styles from '../styles/BoulderTokenCreation.module.css';
 import bgImage from '../assets/imgs/pexels-cottonbro-studio-6701740.jpg';
 // import {CREATE_VOUCHER_MUTATION} from '../gql/mutations.js';
 import {NavLink, useLocation} from 'react-router-dom';
+import {ADD_VOUCHERS} from '../gql/mutations';
 
 const TOKEN_VALUE = 10;
 
@@ -12,6 +13,8 @@ const BoulderingTokenCreation = () => {
 	const searchParams = new URLSearchParams(location.search);
 	const numberOfTokens = searchParams && searchParams.get('tokens');
 	const AMOUNT_PAYABLE = numberOfTokens && parseInt(numberOfTokens) * TOKEN_VALUE;
+	const [addVouchers] = useMutation(ADD_VOUCHERS); // Use your actual GraphQL mutation function
+	
 
 	// useEffect(() => {
 	// 	if (numberOfTokens) {
@@ -23,22 +26,22 @@ const BoulderingTokenCreation = () => {
 	// }, [numberOfTokens]);
 
 	const [tokens, setTokens] = useState<string[]>([]);
-	// const [createVoucher] = useMutation(CREATE_VOUCHER_MUTATION); // Use your actual GraphQL mutation function
 
 	// const handleGenerateTokens = async () => {
 	// 	// Generate 1 or 10 tokens based on the numberOfTokens prop
-	// 	const newTokens = Array.from({length: parseInt(numberOfTokens!)}, (_, index) => {
+	// 	const newVouchers = Array.from({length: parseInt(numberOfTokens!)}, (_, index) => {
 	// 		return `Token-${index + 1}`;
 	// 	});
 
 	// 	// Store the generated tokens in the component's state
-	// 	setTokens(newTokens);
+	// 	// setTokens(newTokens);
 
 	// 	// Create vouchers and add to the backend using a GraphQL mutation
 	// 	try {
-	// 		const result = await createVoucher({
+	// 		const result = await addVouchers({
 	// 			variables: {
-	// 				tokens: newTokens,
+	// 				userId: 
+	// 				vouchers: newVouchers,
 	// 				// Other variables you need for your mutation
 	// 			},
 	// 		});

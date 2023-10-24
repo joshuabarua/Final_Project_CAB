@@ -22,10 +22,16 @@ const resolvers = {
 			return await voucherModel.find();
 		},
 
+		currentUser: (parent, args, context) => context.getUser(),
+
 		async user(parent, args, contextValue) {
+			const user = userModel.findById(args.id);
+			if (!user) {
+				throw new Error('User not found'.bgRed);
+			}
 			console.log('args :>> '.bgYellow, args);
+			console.log('parent :>> '.bgCyan, parent);
 			console.log('contextValue :>> '.bgMagenta, contextValue);
-			return userModel.findById(args.id);
 		},
 
 		async timeslot(_, args) {
@@ -115,8 +121,6 @@ const resolvers = {
 				const savedVoucher = await newVoucher.save();
 				vouchers.push(savedVoucher);
 			}
-
-			// Update the user's vouchers array
 			user.vouchers = user.vouchers.concat(vouchers);
 			await user.save();
 
@@ -127,47 +131,34 @@ const resolvers = {
 			return await userModel.findByIdAndRemove(args.id);
 		},
 
-		async login(_, {email, password}) {
-			try {
-				const existingUser = await userModel.findOne({email});
-
-				if (!existingUser) {
-					throw new Error('No user with that email.');
-				}
-
-				const verified = await verifyPassword(password, existingUser.password);
-
-				if (!verified) {
-					throw new Error("Password doesn't match.");
-				}
-
-				const token = generateToken(existingUser);
-				return {
-					token,
-					user: {
-						_id: existingUser._id,
-						email: existingUser.email,
-						name: existingUser.name,
-						bookings: existingUser.bookings,
-						vouchers: existingUser.vouchers,
-						createdAt: existingUser.createdAt,
-					},
-				};
-			} catch (error) {
-				throw new Error('Something went wrong...', error);
-			}
+		//WORKING
+		async login(parent, args, context) {
+			const {email, password} = args;
+			const {user} = await context.authenticate('graphql-local', {email, password});
+			await context.login(user);
+			console.log('user >>:'.bgGreen, user);
+			if (!user) throw new Error('No user with that email.');
+			const token = generateToken(user);
+			return {
+				token,
+				user,
+			};
 		},
 
-		async register(_, args) {
+		async register(parent, args, context) {
 			const {email, password, name} = args;
-			// Validate the input
+			const existingUser = await userModel.findOne({email});
+			if (existingUser) {
+				console.log('User already exists'.bgRed);
+				throw new Error('User already exists'.bgRed);
+			}
 			if (!email || !password || !name) {
+				console.log('Please fill out all fields'.bgRed);
 				throw new Error('Please fill out all fields', {
 					invalidArgs: ['email', 'password', 'name'],
 				});
 			}
 			try {
-				// Perform user creation logic
 				const hashedPassword = await encryptPassword(password);
 				const newUser = new userModel({
 					email,
@@ -186,6 +177,7 @@ const resolvers = {
 					createdAt: result.createdAt,
 					_id: result._id,
 				};
+				context.login(newUser);
 				return {
 					token,
 					user: forFront,
@@ -201,6 +193,8 @@ const resolvers = {
 				}
 			}
 		},
+
+		logout: (parent, args, context) => context.logout(),
 	},
 };
 
