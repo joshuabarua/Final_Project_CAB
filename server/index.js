@@ -52,7 +52,7 @@ const addMiddlewares = () => {
 
 	app.use((req, res, next) => {
 		const token = req.header('authorization');
-		console.log('Token from header server side', token);
+		req.token = token;
 		const user = getPayload(token);
 		if (user) {
 			req.user = user;

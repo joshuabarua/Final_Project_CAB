@@ -115,7 +115,6 @@ const resolvers = {
 			if (!user) {
 				throw new Error('User not found');
 			}
-
 			const vouchers = [];
 			for (let i = 0; i < numberOfVouchers; i++) {
 				const newVoucher = new voucherModel({
@@ -123,13 +122,11 @@ const resolvers = {
 					status: 'UNUSED',
 					assignedUser: userId,
 				});
-				const savedVoucher = await newVoucher.save();
-				vouchers.push(savedVoucher);
+				vouchers.push(newVoucher);
 			}
-			user.vouchers = user.vouchers.concat(vouchers);
-			await user.save();
-
-			return vouchers;
+			const savedVouchers = await voucherModel.create(vouchers);
+			const populatedVouchers = await voucherModel.populate(savedVouchers, {path: 'User'});
+			return populatedVouchers;
 		},
 
 		async deleteUser(_, args) {
