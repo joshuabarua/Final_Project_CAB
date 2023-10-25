@@ -125,6 +125,11 @@ const resolvers = {
 				vouchers.push(newVoucher);
 			}
 			const savedVouchers = await voucherModel.create(vouchers);
+			console.log('saved Vouchers'.bgBlue, savedVouchers);
+			savedVouchers.forEach((voucher) => {
+				user.vouchers.push(voucher._id);
+			});
+			user.save();
 			const populatedVouchers = await voucherModel.populate(savedVouchers, {path: 'User'});
 			return populatedVouchers;
 		},

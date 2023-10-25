@@ -15,7 +15,7 @@ const BoulderingVoucherCreation = () => {
 	const searchParams = new URLSearchParams(location.search);
 	const numberOfVouchers = searchParams.get('vouchers');
 	const vouchers = parseInt(numberOfVouchers || '0', 10);
-	const [addVouchers] = useMutation<VoucherData, VoucherVariables>(ADD_VOUCHERS);
+	const [addVouchers] = useMutation(ADD_VOUCHERS);
 	const AMOUNT_PAYABLE = vouchers * TOKEN_VALUE;
 	const user = JSON.parse(localStorage.getItem('user') || '{}');
 	const userId = user._id;
@@ -46,6 +46,7 @@ const BoulderingVoucherCreation = () => {
 	};
 
 	if (!vouchers || (vouchers !== 1 && vouchers !== 10)) {
+		// setTimeout(() => navigate('/bookingSelection'), 10000);
 		return (
 			<div className='centeredDivCol' style={{height: '100vh', paddingTop: '80px'}}>
 				<p>Invalid number of vouchers</p>
@@ -64,7 +65,7 @@ const BoulderingVoucherCreation = () => {
 					<img src={bgImage} className={styles.products} alt='Tokens' />
 				</div>
 				<div className={styles.rightside}>
-					<form action=''>
+					<div>
 						<h1>Checkout Summary</h1>
 						<div className='centeredDivRow' style={{justifyContent: 'space-evenly'}}>
 							<p>Tokens (€{TOKEN_VALUE} per): </p>
@@ -96,7 +97,7 @@ const BoulderingVoucherCreation = () => {
 						<button type='submit' className={styles.button} onClick={handleCheckout}>
 							Check Out
 						</button>
-					</form>
+					</div>
 				</div>
 			</div>
 		</div>

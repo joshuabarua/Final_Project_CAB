@@ -1,7 +1,6 @@
 import React, {CSSProperties, useContext, useEffect, useState} from 'react';
 import {NavLink, useNavigate} from 'react-router-dom';
 import {AuthContext} from '../contexts/AuthContext';
-import {AUTH_TOKEN, USER_INFO} from '../constants';
 import {toast} from 'react-toastify';
 // import {Nav, NavLink, Bars, NavMenu, NavBtn, IconInsta, IconFB, LogoImg} from './navElements';
 
@@ -13,7 +12,7 @@ import {toast} from 'react-toastify';
 const Nav = () => {
 	// const {scrollNav, setScrollNav} = props;
 	const {user} = useContext(AuthContext);
-	const authToken = localStorage.getItem(AUTH_TOKEN);
+	const authToken = localStorage.getItem('token');
 
 	const navigate = useNavigate();
 
@@ -104,8 +103,8 @@ const Nav = () => {
 						<a
 							style={{cursor: 'pointer'}}
 							onClick={() => {
-								localStorage.removeItem(AUTH_TOKEN);
-								localStorage.removeItem(USER_INFO);
+								localStorage.removeItem('token');
+								localStorage.removeItem('user');
 								toast.success('Logging out...');
 								setTimeout(() => navigate(`/`), 500);
 							}}>
@@ -129,7 +128,6 @@ const Nav = () => {
                                 'Please Login...'
                             )} */}
 					</p>
-					<p>{user ? <img src={`${user.image_url}`} className='navProfilePic' style={{border: 'solid 1px rgba(0,0,0,0.2)'}} /> : <></>}</p>
 				</div>
 			</div>
 		</nav>

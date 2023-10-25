@@ -5,7 +5,6 @@ import {useNavigate} from 'react-router-dom';
 import getToken from '../utils/getToken';
 import {LOGIN_USER, REGISTER_USER} from '../gql/mutations.js';
 import {useMutation} from '@apollo/client';
-import {AUTH_TOKEN, USER_INFO} from '../constants.js';
 
 interface DefaultValue {
 	user: null | User;
@@ -46,7 +45,7 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 	const baseURL = import.meta.env.VITE_SERVER_BASE as string;
 	const [user, setUser] = useState<null | User>(null);
 	const navigate = useNavigate();
-
+	console.log(user);
 	const [registerMutationFunc, {loading}] = useMutation<RegisterData, RegisterVariables>(REGISTER_USER);
 	const register = async ({registerEmail, registerPassword, registerName}: RegisterVariables) => {
 		try {
@@ -142,8 +141,8 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 
 	const logout = () => {
 		setUser(null);
-		localStorage.removeItem(AUTH_TOKEN);
-		localStorage.removeItem(USER_INFO);
+		localStorage.removeItem('token');
+		localStorage.removeItem('user');
 		toast.success('Logging out...');
 		setTimeout(() => navigate(`/`), 500);
 	};
