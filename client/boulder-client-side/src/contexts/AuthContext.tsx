@@ -78,26 +78,29 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 		}
 	};
 
-	const [loginMutationFunc, {error: loginError, loading: loginLoading}] = useMutation<LoginData, LoginVariables>(LOGIN_USER);
+	const [loginMutationFunc, {error, loading: loginLoading}] = useMutation<LoginData, LoginVariables>(LOGIN_USER);
 	const login = async ({loginEmail, loginPassword}: LoginVariables) => {
 		try {
 			const result = await loginMutationFunc({
 				variables: {loginEmail, loginPassword},
 			});
 
-			if (loginError) {
-				toast.error(`Something went wrong - ${loginError.message}`);
+			if (result.errors || error) {
+				toast.error(`Something went wrong - ${result.errors || error}`);
 			}
 			if (loginLoading) {
 				console.log(loginLoading);
 			}
 
-			const {user, token} = result.data!.login;
-			localStorage.setItem('token', token);
-			localStorage.setItem('user', JSON.stringify(user));
-			toast.success('Login Successful');
-			setUser(user);
-			setTimeout(() => navigate('/'), 1000);
+			if (result.data) {
+				const {user, token} = result.data.login;
+				console.log('Token from header:', token);
+				localStorage.setItem('token', token);
+				localStorage.setItem('user', JSON.stringify(user));
+				toast.success('Login Successful');
+				setUser(user);
+				setTimeout(() => navigate('/'), 1000);
+			}
 		} catch (error) {
 			toast.error(`Something went wrong - ${error}`);
 		}

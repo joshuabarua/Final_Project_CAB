@@ -22,6 +22,9 @@ import BoulderingTokenCreation from './pages/BoulderingTokenCreation.tsx';
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 	cache,
 	uri: 'http://localhost:4001/graphql',
+	headers: {
+		authorization: localStorage.getItem('token') || '',
+	},
 });
 
 const router = createBrowserRouter([

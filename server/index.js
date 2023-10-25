@@ -50,14 +50,15 @@ const addMiddlewares = () => {
 	app.use(cors());
 	configurePassport();
 
-	//TODO: Figure out how to do jwt auth with requests before they hit graphql server
-	// app.use((req, res, next) => {
-	// 	const user = getPayload(req);
-	// 	if (user) {
-	// 		req.user = user; // Add the user to the request object
-	// 	}
-	// 	next();
-	// });
+	app.use((req, res, next) => {
+		const token = req.header('authorization');
+		console.log('Token from header server side', token);
+		const user = getPayload(token);
+		if (user) {
+			req.user = user;
+		}
+		next();
+	});
 };
 
 const startServer = async () => {

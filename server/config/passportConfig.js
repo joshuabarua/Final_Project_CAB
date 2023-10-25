@@ -64,13 +64,13 @@ export const generateToken = (user) => {
 };
 
 export const getPayload = (token) => {
-	const {authorization} = token;
-	console.log(token.authorization);
-	if (typeof authorization !== 'string' || authorization.length === 0) {
+	console.log('token payload', token);
+	if (typeof token !== 'string' || token.length === 0) {
 		console.error('Invalid token');
 		return null;
 	}
 	try {
+		console.log('success, verified token'.bgGreen);
 		const payload = jwt.verify(token, process.env.JWT_SECRET);
 		return {loggedIn: true, payload};
 	} catch (err) {
