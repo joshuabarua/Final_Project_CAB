@@ -18,7 +18,7 @@ const EventBookingCards: React.FC = () => {
 					<p>Generates a boulder token for use with booking.</p>
 					{selectedCard === 1 && (
 						<div className='selected-card-content'>
-							<button onClick={() => navigate(`/getTokens?tokens=${1}`)}>Buy 1 boulder token</button>
+							<button onClick={() => navigate(`/getVouchers?vouchers=${1}`)}>Buy 1 boulder token</button>
 						</div>
 					)}
 				</div>
@@ -28,7 +28,7 @@ const EventBookingCards: React.FC = () => {
 					<p>Creates 10 voucher codes for 10 sessions, useable whenever you need them most.</p>
 					{selectedCard === 2 && (
 						<div className='selected-card-content'>
-							<button onClick={() => navigate(`/getTokens?tokens=${10}`)}>Pay for 10 Sessions</button>
+							<button onClick={() => navigate(`/getVouchers?vouchers=${10}`)}>Pay for 10 Sessions</button>
 						</div>
 					)}
 				</div>

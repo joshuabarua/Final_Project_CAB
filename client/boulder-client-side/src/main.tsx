@@ -17,7 +17,7 @@ import Info from './pages/Info.tsx';
 import Contact from './pages/Contact.tsx';
 import CardSelection from './pages/CardSelection.tsx';
 import QuickBook from './pages/QuickBook.tsx';
-import BoulderingTokenCreation from './pages/BoulderingTokenCreation.tsx';
+import BoulderingVoucherCreation from './pages/BoulderingVoucherCreation.tsx';
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 	cache,
@@ -72,8 +72,8 @@ const router = createBrowserRouter([
 						element: <Contact />,
 					},
 					{
-						path: '/getTokens',
-						element: <BoulderingTokenCreation />,
+						path: '/getVouchers',
+						element: <BoulderingVoucherCreation />,
 					},
 					{
 						path: '/bookingSelection',

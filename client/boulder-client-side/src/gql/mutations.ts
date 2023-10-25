@@ -48,7 +48,9 @@ export const ADD_VOUCHERS = gql`
 			_id
 			purchaseDate
 			status
-			assignedUser
+			assignedUser {
+				_id
+			}
 		}
 	}
 `;
