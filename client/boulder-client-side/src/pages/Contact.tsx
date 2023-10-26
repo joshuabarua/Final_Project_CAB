@@ -1,20 +1,18 @@
 import React from 'react';
+import contactImg from '../assets/imgs/pexels-cottonbro-studio-6701735.jpg';
 
 const contactContainerStyle: React.CSSProperties = {
 	display: 'flex',
 	flexDirection: 'column',
 	alignItems: 'center',
 	justifyContent: 'center',
-	padding: '20px',
-	height: '100vh',
+	height: '150vh',
 };
 
 const contactItemStyle: React.CSSProperties = {
 	maxWidth: '600px',
-	padding: '20px',
-	border: '1px solid #ccc',
-	borderRadius: '5px',
-	margin: '10px',
+	padding: '40px',
+	marginBottom: '50px',
 	textAlign: 'center',
 };
 
@@ -32,6 +30,15 @@ const paragraphStyle = {
 const ContactUs = () => {
 	return (
 		<div style={contactContainerStyle}>
+			<img
+				src={contactImg}
+				style={{
+					objectFit: 'cover',
+					width: '100%',
+					height: '100%',
+				}}
+				alt='climbing'
+			/>
 			<div style={contactItemStyle}>
 				<h2 style={headingStyle}>Contact Boulder Bebis</h2>
 				<p style={paragraphStyle}>We'd love to hear from you!</p>
@@ -44,7 +51,7 @@ const ContactUs = () => {
 				</p>
 			</div>
 
-			<div style={contactItemStyle}>
+			<div style={{...contactItemStyle, background: 'white', boxShadow: '0 0 10px #dbd6d6', borderRadius: '10px'}}>
 				<h2 style={headingStyle}>Send Us a Message</h2>
 				<p style={paragraphStyle}>Have any questions or feedback? Feel free to reach out to us by filling out the form below:</p>
 				<form>

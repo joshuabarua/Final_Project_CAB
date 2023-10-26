@@ -1,11 +1,9 @@
-import {useEffect, useState} from 'react';
 import {useMutation} from '@apollo/client';
 import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import styles from '../styles/BoulderTokenCreation.module.css';
 import {toast} from 'react-toastify';
 import bgImage from '../assets/imgs/pexels-cottonbro-studio-6701740.jpg';
 import {ADD_VOUCHERS} from '../gql/mutations';
-import {VoucherData, VoucherVariables} from '../@types';
 
 const TOKEN_VALUE = 10;
 
@@ -60,7 +58,7 @@ const BoulderingVoucherCreation = () => {
 			<h2>Purchase Bouldering Tokens</h2>
 			<div className={styles.card}>
 				<div className={styles.leftside}>
-					<img src={bgImage} className={styles.products} alt='Tokens' />
+					<img src={bgImage} className={styles.vouchers} alt='Tokens' />
 				</div>
 				<div className={styles.rightside}>
 					<div>

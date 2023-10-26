@@ -1,4 +1,5 @@
 import React from 'react';
+import infoImg from '../assets/imgs/pexels-cottonbro-studio-6699954.jpg';
 
 const infoContainerStyle = {
 	display: 'flex',
@@ -20,12 +21,23 @@ const headingStyle = {
 
 const paragraphStyle: React.CSSProperties = {
 	fontSize: '16px',
-	margin: '10px 0',
+	margin: '20px 0',
+	padding: '10px',
 };
 
 const Info = () => {
 	return (
 		<div style={infoContainerStyle}>
+			<img
+				src={infoImg}
+				style={{
+					objectFit: 'cover',
+					width: '100%',
+					height: '100%',
+				}}
+				alt='climbing'
+			/>
+
 			<div style={infoContentStyle}>
 				<h1 style={headingStyle}>Welcome to Boulder Bebis Climbing Gym</h1>
 				<p style={paragraphStyle}>Address: 123 Climber's Lane, Rockville, USA</p>

@@ -4,15 +4,25 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 const Footer = () => {
 	return (
-		<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100vw', height: '30vh', padding: '10px'}}>
+		<div
+			style={{
+				display: 'flex',
+				justifyContent: 'center',
+				alignItems: 'center',
+				flexDirection: 'column',
+				width: '100vw',
+				height: '30vh',
+				padding: '10px',
+				backgroundColor: '#fce6d1',
+			}}>
 			<div style={{display: 'flex', justifyContent: 'space-evenly', gap: '20px', alignItems: 'center', flexDirection: 'row', width: '100%'}}>
-				<div>
+				<div className='footer'>
 					<p>
 						<strong>BOULDER Bb's GMBH </strong>{' '}
 					</p>
 					<p>Thiemannstr. 1 12059 Berlin</p>
 					<p>
-						<strong>Mo-Fr</strong> 10-23 Uhr
+						<strong>Mo-Fr</strong> 8-23 Uhr
 					</p>
 					<p>
 						<strong>Sa,So,</strong>Feiertag 10-22 Uhr

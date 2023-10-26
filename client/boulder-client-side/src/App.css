@@ -1,16 +1,14 @@
 :root {
-	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	font-family: Arial, sans-serif;
 	line-height: 1.5;
 	font-weight: 400;
 
-	color-scheme: light dark;
-
-	--dominant-color: #ddfff7;
+	--dominant-color: #f8fefd;
 	--secondary-color: #93e1d8;
-	--accent-color: #ffa69e;
+	--accent-color: #fce6d1;
 
-	--background-light: #ffffff; /* Light mode background color */
-	--text-light: #333333; /* Light mode text color */
+	--background-light: #eefaf7; /* Light mode background color */
+	--text-light: #3a3335; /* Light mode text color */
 	--content-light: #87ceeb; /* Light mode primary content color */
 	--links-light: #007bff; /* Light mode link color */
 	--buttons-light: #f9f9f9; /* Light mode button color */
@@ -23,9 +21,8 @@
 
 	--accent-color: #ffa69e; /* Accent color for both modes */
 
-	background-color: var(--background-dark);
-	color: var(--text-dark);
-
+	background-color: var(--background-light);
+	color: var(--text-light);
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -33,25 +30,12 @@
 	-webkit-text-size-adjust: 100%;
 }
 
-@media (prefers-color-scheme: light) {
-	:root {
-		body {
-			background-color: var(--background-light);
-			color: var(--text-light);
-		}
-	}
-	a,
-	a:visited {
-		color: var(--links-light); /* Use the accent color variable */
-	}
-	button {
-		background-color: var(--buttons-light); /* Use the secondary color variable */
-	}
-}
-
 a,
-a:visited {
-	--text-color: #213547;
+a:visited,
+a:hover,
+a:focus {
+	color: rgba(230, 56, 91, 0.82);
+	font-weight: 800;
 	text-decoration: none;
 }
 
@@ -85,7 +69,7 @@ body {
 }
 
 .homeContainer p {
-	padding: 30px;
+	padding: 10px 100px;
 }
 
 .formStyles {
@@ -162,21 +146,14 @@ body {
 	transform: scale(1.2); /* Slightly scale up when selected */
 }
 
-@keyframes logo-spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
+/** Footer **/
+
+.footer p,
+h2,
+h4 {
+	font-size: smaller;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-	a:nth-of-type(2) .logo {
-		animation: logo-spin infinite 20s linear;
-	}
-}
-
-.card {
+/* .card {
 	padding: 2em;
-}
+} */

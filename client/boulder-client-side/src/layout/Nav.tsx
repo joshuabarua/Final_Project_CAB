@@ -39,8 +39,10 @@ const Nav = () => {
 	};
 
 	const activeLink: React.CSSProperties = {
-		color: 'rgb(149, 206, 200)',
-		fontWeight: 'bold',
+		paddingBottom: '5px',
+		width: '70%',
+		borderBottom: '1px solid rgba(230, 56, 91, 0.82)',
+		fontSize: 'larger',
 	};
 
 	useEffect(() => {
@@ -94,8 +96,14 @@ const Nav = () => {
 								</NavLink>
 							) : (
 								<div
-									style={{border: '1px solid gold', height: '40px', width: '40px', borderRadius: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-									<h3>x{user.vouchers.length}</h3>
+									style={{
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+									}}>
+									<h3 style={{color: ' rgba(230, 56, 91, 0.82', border: '2px solid  rgba(230, 56, 91, 0.82)', height: '30px', width: '35px', borderRadius: '100%'}}>
+										x{user.vouchers.length}
+									</h3>
 								</div>
 							)
 						) : (

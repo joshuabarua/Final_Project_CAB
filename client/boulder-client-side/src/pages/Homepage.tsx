@@ -12,14 +12,26 @@ const Homepage = () => {
 					width: '100vw',
 					height: '100vh',
 				}}>
-				<h1
+				<div
 					style={{
-						fontSize: 96,
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						flexDirection: 'column',
+						border: '1px solid #fce6d1;',
+						width: '30%',
+						height: '30%',
+						borderRadius: '100%',
+						backgroundColor: ' #fce6d1',
 					}}>
-					Boulder Bebi's
-				</h1>
-
-				<p>Book your next session online!</p>
+					<h1
+						style={{
+							fontSize: 86,
+							lineHeight: '70px',
+						}}>
+						Boulder Bebi's
+					</h1>
+				</div>
 			</div>
 			<div
 				style={{
@@ -41,15 +53,14 @@ const Homepage = () => {
 						objectFit: 'cover',
 						height: '100% ',
 						width: '100%',
-						filter: 'saturate(300%) blur(5px)  sepia(70%)',
+						filter: 'saturate(300%) blur(3px)  sepia(40%)',
+						borderBottom: '3px white solid',
 					}}>
 					<source src={backgroundVideo} type='video/mp4' />
 				</video>
 			</div>
 			<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100vw', height: '100vh'}}>
-				<div
-					className='homeContainer'
-					style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100vw', height: '100vh', padding: '30px'}}>
+				<div className='homeContainer' style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100vw', height: '100vh'}}>
 					<h1 style={{fontSize: '2rem'}}>News!</h1>
 					<p
 						style={{

@@ -50,8 +50,8 @@ const ProfilePage: React.FC = () => {
 
 	return (
 		<div className='centeredDivCol' style={{height: '100vh'}}>
-			<div className='centeredDivCol' style={{height: '40%', width: '50%', border: 'white 1px solid', gap: '30px'}}>
-				<h2>User Profile</h2>
+			<div className='centeredDivCol' style={{height: '50%', width: '40%', backgroundColor: 'white', borderRadius: '10px', gap: '30px'}}>
+				<h1>User Profile</h1>
 				{user ? (
 					<div className='centeredDivRow' style={{height: '100%', width: '100%', justifyContent: 'space-evenly', alignItems: 'flex-start'}}>
 						<div className='centeredDivCol' style={{justifyContent: 'space-evenly', height: '50%', width: '50%', gap: '20px'}}>

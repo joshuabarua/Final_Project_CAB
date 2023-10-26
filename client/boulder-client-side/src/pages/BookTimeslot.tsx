@@ -24,9 +24,12 @@ const BookTimeSlot = () => {
 	return (
 		<div className='centeredDivCol' style={{height: '100vh'}}>
 			<LocalizationProvider dateAdapter={AdapterDateFns}>
-				<Box>
+				<div
+					className='centeredDivCol'
+					style={{width: '40vw', height: '40vh', background: 'white', boxShadow: '0 0 10px #dbd6d6', borderRadius: '10px', display: 'flex', justifyContent: 'space-evenly'}}>
 					<Typography variant='h6'>Select a Time Slot:</Typography>
 					<DateTimePicker
+						sx={{color: 'white'}}
 						ampm={false}
 						minutesStep={60}
 						minDate={new Date(Date.now())}
@@ -44,9 +47,10 @@ const BookTimeSlot = () => {
 								// hours < minTimeConfig.getHours ?
 							}
 						}}
+						className='whiteText'
 					/>
-				</Box>
-				{selectedTime && <Typography variant='body2'>Selected Date and Time: {format(selectedTime, 'dd/MM/yyyy HH')}:00</Typography>}
+					{selectedTime && <Typography variant='body2'>Selected Timeslot {format(selectedTime, 'dd/MM/yyyy HH')}:00</Typography>}
+				</div>
 			</LocalizationProvider>
 		</div>
 	);
