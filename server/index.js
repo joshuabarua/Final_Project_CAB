@@ -49,16 +49,6 @@ const addMiddlewares = () => {
 	app.use(express.urlencoded({extended: true}));
 	app.use(cors());
 	configurePassport();
-
-	app.use((req, res, next) => {
-		const token = req.header('authorization');
-		req.token = token;
-		const user = getPayload(token);
-		if (user) {
-			req.user = user;
-		}
-		next();
-	});
 };
 
 const startServer = async () => {
@@ -72,22 +62,19 @@ const startServer = async () => {
 	app.use(
 		'/graphql',
 		expressMiddleware(server, {
-			context: ({req, res}) => {
-				return;
+			context: async ({req, res}) => {
+				const token = req.headers.authorization;
+				if (token) {
+					const payload = getPayload(token);
+					if (payload) {
+						const user = await userModel.findById(payload.sub);
+						return {user, validated: 'valid'};
+					} else {
+						return {user: null, validated: 'invalid'};
+					}
+				}
+				return {user: null, validated: 'no token'};
 			},
-			// console.log(`req.headers auth :>> ${req.headers.authorization}`.bgGreen),
-			// console.log(`req.headers token :>> ${req.headers.token}`.bgGreen),
-			// ({
-			// 	getUser: () => req.user,
-			// 	logout: () => req.logout(), // const token = req.headers.authorization;
-			// }),
-			// passport.authenticate('jwt', {session: false}, (err, user, token) => {
-			// 	if (err || !user) {
-			// 		console.log('error'.bgRed, err, token);
-			// 	} else {
-			// 		return {user};
-			// 	}
-			// })(req);
 		})
 	);
 

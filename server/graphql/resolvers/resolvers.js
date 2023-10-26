@@ -22,23 +22,18 @@ const resolvers = {
 			return await voucherModel.find();
 		},
 
-		getCurrentUser: async (parent, args, context) => {
-			if (!context.currentUser) {
-				console.log("Couldn't find current user".bgRed);
-				return null;
-			}
-			console.log('Current USer:'.bgGreen, context.currentUser);
-			return context.currentUser;
+		getCurrentUser: async (parent, args, context, info) => {
+			return context.user;
 		},
 
-		async user(parent, args, contextValue) {
-			const user = userModel.findById(args.id);
+		async user(parent, args, context) {
+			const user = context.user;
 			if (!user) {
 				throw new Error('User not found'.bgRed);
 			}
 			console.log('args :>> '.bgYellow, args);
 			console.log('parent :>> '.bgCyan, parent);
-			console.log('contextValue :>> '.bgMagenta, contextValue);
+			console.log('contextValue :>> '.bgMagenta, context);
 		},
 
 		async timeslot(_, args) {
@@ -53,7 +48,8 @@ const resolvers = {
 	},
 
 	User: {
-		async assignedBookings(parent) {
+		async assignedBookings(parent, __, context) {
+			context.user;
 			const bookedSessions = parent.assignedBookings;
 			if (!bookedSessions) {
 				console.log('No booked timeslots right now'.bgRed, bookedSessions);
@@ -67,7 +63,7 @@ const resolvers = {
 			return bookingsArray;
 		},
 
-		async vouchers(parent) {
+		async vouchers(parent, __, context) {
 			const vouchersModel = parent.vouchers;
 			console.log('parent.Vouchers :>> '.bgBlue, vouchersModel);
 			const vouchersArr = vouchersModel.map(async (voucherId) => {
@@ -235,11 +231,11 @@ const resolvers = {
 		},
 
 		updateUserProfile: async (parent, args, context) => {
-			if (!context.currentUser) {
+			if (!context.user) {
 				throw new AuthenticationError('User not authenticated');
 			}
-			const updatedUserData = {...context.currentUser, ...args};
-			const updatedUser = await userModel.findByIdAndUpdate(context.currentUser._id, updatedUserData, {new: true});
+			const updatedUserData = {...context.user, ...args};
+			const updatedUser = await userModel.findByIdAndUpdate(context.user._id, updatedUserData, {new: true});
 			return updatedUser;
 		},
 
