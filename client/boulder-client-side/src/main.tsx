@@ -19,6 +19,7 @@ import CardSelection from './pages/CardSelection.tsx';
 import QuickBook from './pages/BuyVouchers.tsx';
 import BoulderingVoucherCreation from './pages/BoulderingVoucherCreation.tsx';
 import Profile from './pages/Profile.tsx';
+import BookTimeSlot from './pages/BookTimeslot.tsx';
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 	cache,
@@ -85,8 +86,8 @@ const router = createBrowserRouter([
 						element: <CardSelection />,
 					},
 					{
-						path: '/bookslot',
-						element: <QuickBook />,
+						path: '/booktimeslot',
+						element: <BookTimeSlot />,
 					},
 				],
 			},

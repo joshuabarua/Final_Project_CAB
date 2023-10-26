@@ -83,6 +83,9 @@ const Nav = () => {
 					<NavLink to='/voucherSelection' style={({isActive}) => (isActive ? activeLink : {})}>
 						Buy Vouchers
 					</NavLink>
+					<NavLink to='/booktimeslot' style={({isActive}) => (isActive ? activeLink : {})}>
+						Book Timeslot
+					</NavLink>
 					<NavLink to='/info' style={({isActive}) => (isActive ? activeLink : {})}>
 						Info
 					</NavLink>

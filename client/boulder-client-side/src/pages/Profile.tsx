@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {useQuery, useMutation} from '@apollo/client';
 import {GET_CURRENT_USER, UPDATE_USER_PROFILE} from '../gql/mutations'; // Replace with your actual GraphQL queries
-import {AuthContext} from '../contexts/AuthContext';
+// import {AuthContext} from '../contexts/AuthContext';
 
 interface User {
 	_id: string;
