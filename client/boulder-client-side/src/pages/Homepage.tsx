@@ -1,5 +1,4 @@
 import backgroundVideo from '../assets/vids/backgroundVid.mp4';
-// import {NavLink} from 'react-router-dom';
 
 const Homepage = () => {
 	return (
@@ -47,15 +46,10 @@ const Homepage = () => {
 					<source src={backgroundVideo} type='video/mp4' />
 				</video>
 			</div>
-			<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100vw', height: '100vh', padding: '1rem '}}>
-				{/* <div className='centeredDiv' style={{flex: '1', overflow: 'hidden'}}>
-				<img
-					src={'/src/assets/imgs/pexels-anna-tarazevich-7772006.jpg'}
-					style={{minWidth: '200px', width: '100%', height: '100%', objectFit: 'contain'}}
-					alt='Pfantastisch Image'
-				/>
-			</div> */}
-				<div>
+			<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100vw', height: '100vh'}}>
+				<div
+					className='homeContainer'
+					style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100vw', height: '100vh', padding: '30px'}}>
 					<h1 style={{fontSize: '2rem'}}>News!</h1>
 					<p
 						style={{

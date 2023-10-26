@@ -19,6 +19,7 @@ const WithNav = (props: Props) => {
 
 	return (
 		<div id={'withNavWrapper'} style={navWrapperStyles}>
+			
 			<Nav />
 			{props.children}
 			<Footer />

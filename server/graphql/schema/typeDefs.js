@@ -53,7 +53,7 @@ const typeDefs = `#graphql
 	type Mutation {
 		addUser(newUserData: AddUserInput!): User
 		addTimeslot(newTimeslotData: AddTimeslotInput!): Timeslot
-		addVouchers(userId: ID!, numberOfVouchers: Int!): [Voucher]
+		addVouchers(numberOfVouchers: Int!): [Voucher]
 		deleteUser(_id: ID!): User
 		login(email: String!, password: String!): AuthPayload
 		logout: Boolean

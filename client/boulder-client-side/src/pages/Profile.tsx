@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {useQuery, useMutation} from '@apollo/client';
 import {GET_CURRENT_USER, UPDATE_USER_PROFILE} from '../gql/mutations'; // Replace with your actual GraphQL queries
-// import {AuthContext} from '../contexts/AuthContext';
+import {AuthContext} from '../contexts/AuthContext';
 
 interface User {
 	_id: string;
@@ -11,22 +11,18 @@ interface User {
 }
 
 const ProfilePage: React.FC = () => {
-	// const {user, setUser} = useContext(AuthContext);
+	const {user, setUser} = useContext(AuthContext);
 
-	const userStr = localStorage.getItem('user');
-	const userParse = userStr && JSON.parse(userStr);
-	const [user, setUser] = useState<User | null>(userParse);
-	console.log(user);
 	const [name, setName] = useState(user?.name);
 	const [email, setEmail] = useState(user?.email);
+	const [password, setPassword] = useState(user?.password);
 
 	const {data, loading: queryLoading} = useQuery(GET_CURRENT_USER);
 	const [updateUserProfile] = useMutation(UPDATE_USER_PROFILE);
 
 	useEffect(() => {
 		if (!queryLoading && data && data.currentUser) {
-			const currentUser: User = data.currentUser;
-			setUser(currentUser);
+			const currentUser = data.currentUser;
 			setName(currentUser.name);
 			setEmail(currentUser.email);
 		}
@@ -52,23 +48,45 @@ const ProfilePage: React.FC = () => {
 		return <div>Loading...</div>;
 	}
 
-	console.log('profile Page:', user);
-
 	return (
 		<div className='centeredDivCol' style={{height: '100vh'}}>
-			<div className='centeredDivCol' style={{height: '50%', width: '50%', border: 'white 1px solid', gap: '30px'}}>
+			<div className='centeredDivCol' style={{height: '40%', width: '50%', border: 'white 1px solid', gap: '30px'}}>
 				<h2>User Profile</h2>
 				{user ? (
-					<div className='centeredDivCol' style={{justifyContent: 'space-evenly', height: '50%', width: '50%'}}>
-						<div>
-							<label htmlFor='name'>Name:</label>
-							<input type='text' id='name' value={name} onChange={(e) => setName(e.target.value)} placeholder={user.name} />
+					<div className='centeredDivRow' style={{height: '100%', width: '100%', justifyContent: 'space-evenly', alignItems: 'flex-start'}}>
+						<div className='centeredDivCol' style={{justifyContent: 'space-evenly', height: '50%', width: '50%', gap: '20px'}}>
+							<div style={{justifyContent: 'space-evenly', height: '50%', width: '50%', alignItems: 'flex-start'}}>
+								<label htmlFor='name' style={{marginRight: '10px'}}>
+									Name:
+								</label>
+								<input type='text' id='name' value={name} onChange={(e) => setName(e.target.value)} placeholder={user.name} />
+							</div>
+							<div style={{justifyContent: 'space-evenly', height: '50%', width: '50%', alignItems: 'flex-start'}}>
+								<label htmlFor='email' style={{marginRight: '10px'}}>
+									Email:
+								</label>
+								<input type='email' id='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder={user.email} />
+							</div>
+							<div style={{justifyContent: 'space-evenly', height: '50%', width: '50%', alignItems: 'flex-start'}}>
+								<label htmlFor='password' style={{marginRight: '10px'}}>
+									Password:
+								</label>
+								<input type='password' id='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+							</div>
+							<button onClick={handleProfileUpdate} style={{justifyContent: 'space-evenly', height: '50%', width: '50%', alignItems: 'flex-start'}}>
+								Update Profile
+							</button>
 						</div>
 						<div>
-							<label htmlFor='email'>Email:</label>
-							<input type='email' id='email' value={email} onChange={(e) => setEmail(e.target.value)} />
+							<div>
+								<h3>Vouchers Available </h3>
+								<p>{user.vouchers ? user.vouchers.length : 0}</p>
+							</div>
+							<div>
+								<h3>Timeslots Booked </h3>
+								<p>{user.assignedBookings.length}</p>
+							</div>
 						</div>
-						<button onClick={handleProfileUpdate}>Update Profile</button>
 					</div>
 				) : (
 					<div>User not found</div>

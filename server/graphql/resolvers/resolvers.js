@@ -112,7 +112,8 @@ const resolvers = {
 			return await newTimeslot.save();
 		},
 
-		addVouchers: async (_, {userId, numberOfVouchers}) => {
+		addVouchers: async (_, {numberOfVouchers}, context) => {
+			const userId = context.user._id;
 			const user = await userModel.findById(userId);
 
 			if (!user) {
@@ -239,7 +240,15 @@ const resolvers = {
 			return updatedUser;
 		},
 
-		logout: (parent, args, context) => context.logout(),
+		logout: (parent, args, context) => {
+			if (context.user) {
+				context.user.logout();
+				context.user = null;
+				return {success: true};
+			} else {
+				return {success: false};
+			}
+		},
 	},
 };
 

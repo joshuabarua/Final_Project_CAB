@@ -25,7 +25,6 @@ const BoulderingVoucherCreation = () => {
 		try {
 			const result = await addVouchers({
 				variables: {
-					userId: userId,
 					numberOfVouchers: vouchers,
 				},
 			});

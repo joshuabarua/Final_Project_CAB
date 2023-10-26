@@ -55,10 +55,11 @@ a:visited {
 	text-decoration: none;
 }
 
-#root {
-	overflow-y: hidden;
+body {
+	overflow-x: hidden;
 	text-align: center;
 	display: flex;
+	margin: 0;
 }
 
 .centeredDiv {
@@ -81,6 +82,10 @@ a:visited {
 	align-items: center;
 	flex-direction: column;
 	width: 100vw;
+}
+
+.homeContainer p {
+	padding: 30px;
 }
 
 .formStyles {

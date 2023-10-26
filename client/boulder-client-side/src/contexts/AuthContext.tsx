@@ -1,18 +1,19 @@
 import {createContext, useState, ReactNode, useEffect} from 'react';
 import {LoginData, LoginVariables, NotOk, RegisterData, RegisterVariables, User} from '../@types';
 import {toast} from 'react-toastify';
-import {useNavigate} from 'react-router-dom';
+import {redirect, useNavigate} from 'react-router-dom';
 import getToken from '../utils/getToken';
-import {GET_CURRENT_USER, LOGIN_USER, REGISTER_USER} from '../gql/mutations.js';
+import {GET_CURRENT_USER, LOGIN_USER, LOGOUT_USER, REGISTER_USER} from '../gql/mutations.js';
 import {useMutation, useQuery} from '@apollo/client';
 
 interface DefaultValue {
 	user: null | User;
 	setUser: React.Dispatch<React.SetStateAction<User | null>>;
+	loading: boolean;
 	login: ({loginEmail, loginPassword}: LoginVariables) => Promise<void>;
+	logout: () => void;
 	register: ({registerEmail, registerPassword, registerName}: RegisterVariables) => Promise<void>;
 	update: (updateFields: {email: string; password: string; name: string}) => void;
-	logout: () => void;
 }
 
 interface SignupResult {
@@ -22,6 +23,7 @@ interface SignupResult {
 
 const initialValue: DefaultValue = {
 	user: null,
+	loading: false,
 	setUser: () => {
 		throw new Error('context not implemented.');
 	},
@@ -44,12 +46,15 @@ export const AuthContext = createContext<DefaultValue>(initialValue);
 export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 	const baseURL = import.meta.env.VITE_SERVER_BASE as string;
 	const [user, setUser] = useState<null | User>(null);
+	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
-	const [registerMutationFunc, {loading}] = useMutation<RegisterData, RegisterVariables>(REGISTER_USER);
+
+	const [registerMutationFunc, {loading: regLoading}] = useMutation<RegisterData, RegisterVariables>(REGISTER_USER);
 	const register = async ({registerEmail, registerPassword, registerName}: RegisterVariables) => {
 		try {
-			if (loading) {
-				console.log(loading);
+			if (regLoading) {
+				console.log(regLoading);
+				setLoading(true);
 			}
 			const result = await registerMutationFunc({
 				variables: {
@@ -58,20 +63,21 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 					registerName,
 				},
 				onCompleted: (registerData) => {
-					console.log('register variable', registerData);
 					const {user, token} = registerData.register;
 					localStorage.setItem('user', JSON.stringify(user));
-					setUser(user);
 					localStorage.setItem('token', token);
 					toast.success('Signup Successful, logging in...');
+					setUser(user);
+					setLoading(false);
 					setTimeout(() => navigate('/'), 1000);
 				},
 				onError: (error: Error) => {
+					setLoading(false);
 					toast.error(`Something went wrong - ${error.message}`);
 				},
 			});
-			console.log(result);
 		} catch (e) {
+			setLoading(false);
 			toast.error(` ${e as Error}`);
 		}
 	};
@@ -84,22 +90,24 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 			});
 
 			if (result.errors || error) {
+				setLoading(false);
 				toast.error(`Something went wrong - ${result.errors || error}`);
 			}
 			if (loginLoading) {
 				console.log(loginLoading);
+				setLoading(true);
 			}
 
 			if (result.data) {
 				const {user, token} = result.data.login;
-				console.log('Token from header:', token);
 				localStorage.setItem('token', token);
 				localStorage.setItem('user', JSON.stringify(user));
 				toast.success('Login Successful');
-				setUser(user);
-				setTimeout(() => navigate('/'), 1000);
+				setLoading(false);
+				navigate('/');
 			}
 		} catch (error) {
+			setLoading(false);
 			toast.error(`Something went wrong - ${error}`);
 		}
 	};
@@ -137,45 +145,57 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 			console.log('no token');
 		}
 	};
+	const [logoutUser, {error: logoutError}] = useMutation(LOGOUT_USER);
 
-	const logout = () => {
-		setUser(null);
-		localStorage.removeItem('token');
-		localStorage.removeItem('user');
-		toast.success('Logging out...');
-		setTimeout(() => navigate(`/`), 500);
+	const logout = async () => {
+		try {
+			if (logoutError) {
+				console.log('Error:', logoutError);
+			} else {
+				setUser(null);
+				localStorage.removeItem('token');
+				localStorage.removeItem('user');
+				logoutUser();
+				toast.success('Logging out...');
+				setTimeout(() => redirect('/'), 1500);
+			}
+		} catch (error) {
+			console.error('Error:', error);
+		}
 	};
 
-	// const {data, loading: activeUserLoading, error: activeUserError} = useQuery(GET_CURRENT_USER);
-	// const getActiveUser = async () => {
-	// 	try {
-	// 		// if (activeUserLoading) {
-	// 		// 	console.log('loading... get active suer');
-	// 		// 	return;
-	// 		// }
+	const {data, loading: activeUserLoading, error: activeUserError} = useQuery(GET_CURRENT_USER);
 
-	// 		if (activeUserError) {
-	// 			// Handle error (e.g., display an error message)
-	// 			toast.error(activeUserError.message);
-	// 			console.error(activeUserError);
-	// 			return;
-	// 		}
+	const getActiveUser = async () => {
+		try {
+			if (activeUserLoading) {
+				setLoading(true);
+			}
+			if (activeUserError) {
+				toast.error(activeUserError.message);
+				console.error(activeUserError);
+				setLoading(false);
+				return;
+			}
 
-	// 		if (data && data.getCurrentUser) {
-	// 			const currentUser = data.getCurrentUser;
-	// 			setUser(currentUser);
-	// 			console.log('Current User:', currentUser);
-	// 		} else {
-	// 			console.log('No User Data');
-	// 			setUser(null);
-	// 		}
-	// 	} catch (error) {
-	// 		console.error(error);
-	// 	}
-	// };
-	// useEffect(() => {
-	// 	getActiveUser();
-	// }, []);
+			if (data) {
+				const currentUser = data.getCurrentUser;
+				setUser(currentUser);
+				setLoading(false);
+			} else {
+				console.log('No User Data');
+				setUser(null);
+				setLoading(false);
+			}
+		} catch (error) {
+			setLoading(false);
+			console.error(error);
+		}
+	};
 
-	return <AuthContext.Provider value={{user, setUser, register, login, logout, update}}>{children}</AuthContext.Provider>;
+	useEffect(() => {
+		getActiveUser();
+	}, [data]);
+
+	return <AuthContext.Provider value={{user, loading, setUser, register, login, logout, update}}>{children}</AuthContext.Provider>;
 };

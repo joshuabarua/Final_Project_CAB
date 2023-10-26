@@ -10,6 +10,14 @@ export const USER_FIELDS = gql`
 `;
 
 // User Mutations
+export const LOGOUT_USER = gql`
+	mutation LogoutUser {
+		logout {
+			success
+		}
+	}
+`;
+
 export const LOGIN_USER = gql`
 	mutation LoginUser($loginEmail: String!, $loginPassword: String!) {
 		login(email: $loginEmail, password: $loginPassword) {
@@ -43,8 +51,8 @@ export const DELETE_USER = gql`
 `;
 
 export const ADD_VOUCHERS = gql`
-	mutation AddVouchers($userId: ID!, $numberOfVouchers: Int!) {
-		addVouchers(userId: $userId, numberOfVouchers: $numberOfVouchers) {
+	mutation AddVouchers($numberOfVouchers: Int!) {
+		addVouchers(numberOfVouchers: $numberOfVouchers) {
 			_id
 			purchaseDate
 			status
@@ -61,7 +69,10 @@ export const UPDATE_USER_PROFILE = gql`
 		updateUserProfile(email: $email, password: $password, name: $name) {
 			token
 			user {
-				...UserFields
+				_id
+				email
+				name
+				password
 			}
 		}
 	}
@@ -70,7 +81,7 @@ export const UPDATE_USER_PROFILE = gql`
 //Queries
 export const GET_CURRENT_USER = gql`
 	query CurrentUser {
-		currentUser {
+		getCurrentUser {
 			_id
 			email
 			name
