@@ -53,6 +53,18 @@ export const ADD_VOUCHERS = gql`
 			}
 		}
 	}
+	${USER_FIELDS}
+`;
+
+export const UPDATE_USER_PROFILE = gql`
+	mutation UpdateUserProfile($email: String!, $password: String!, $name: String!) {
+		updateUserProfile(email: $email, password: $password, name: $name) {
+			token
+			user {
+				...UserFields
+			}
+		}
+	}
 `;
 
 //Queries
@@ -62,6 +74,15 @@ export const GET_CURRENT_USER = gql`
 			_id
 			email
 			name
+			password
+			vouchers {
+				_id
+			}
+			assignedBookings {
+				_id
+				date
+				time
+			}
 		}
 	}
 `;

@@ -22,7 +22,14 @@ const resolvers = {
 			return await voucherModel.find();
 		},
 
-		currentUser: (parent, args, context) => context.getUser(),
+		getCurrentUser: async (parent, args, context) => {
+			if (!context.currentUser) {
+				console.log("Couldn't find current user".bgRed);
+				return null;
+			}
+			console.log('Current USer:'.bgGreen, context.currentUser);
+			return context.currentUser;
+		},
 
 		async user(parent, args, contextValue) {
 			const user = userModel.findById(args.id);
@@ -225,6 +232,15 @@ const resolvers = {
 					throw new Error('Unknown error occurred', error);
 				}
 			}
+		},
+
+		updateUserProfile: async (parent, args, context) => {
+			if (!context.currentUser) {
+				throw new AuthenticationError('User not authenticated');
+			}
+			const updatedUserData = {...context.currentUser, ...args};
+			const updatedUser = await userModel.findByIdAndUpdate(context.currentUser._id, updatedUserData, {new: true});
+			return updatedUser;
 		},
 
 		logout: (parent, args, context) => context.logout(),

@@ -23,7 +23,6 @@ const BoulderingVoucherCreation = () => {
 	console.log(userId, vouchers);
 	const handleCheckout = async () => {
 		try {
-			//TODO: FIND OUT WHY THIS IS NOT WORKING
 			const result = await addVouchers({
 				variables: {
 					userId: userId,
@@ -35,13 +34,13 @@ const BoulderingVoucherCreation = () => {
 			}
 			if (result.data) {
 				console.log('results:', result.data);
-
 				toast.success('Purchase Successful');
-				setTimeout(() => navigate('/'), 1000);
+				setTimeout(() => navigate('/'), 2000);
 			}
 			console.log('result', result);
 		} catch (error) {
 			console.error('Error adding vouchers:', error);
+			toast.error(`Something went wrong - ${error}`);
 		}
 	};
 

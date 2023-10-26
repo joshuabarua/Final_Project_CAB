@@ -38,7 +38,7 @@ const typeDefs = `#graphql
 		timeslots: [Timeslot]
 		vouchers: [Voucher]
 		user(_id: ID!): User
-		currentUser: User
+		getCurrentUser: User
 		timeslot(_id: ID!): Timeslot
 		voucher(_id: ID!): Voucher
 		getAssignedVouchers(_id: ID!): [Voucher]
@@ -58,6 +58,7 @@ const typeDefs = `#graphql
 		login(email: String!, password: String!): AuthPayload
 		logout: Boolean
 		register(name: String!, password: String!, email: String!): AuthPayload
+		updateUserProfile(userId: ID!, name: String, email: String): User
 	}
 
 	input AddUserInput {

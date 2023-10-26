@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 // type Props = {}
 
-const QuickBook = () => {
+const BuyVouchers = () => {
 	// Create state variables to store form data
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
@@ -48,4 +48,4 @@ const QuickBook = () => {
 	);
 };
 
-export default QuickBook;
+export default BuyVouchers;

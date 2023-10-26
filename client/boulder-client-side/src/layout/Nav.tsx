@@ -11,8 +11,12 @@ import {toast} from 'react-toastify';
 
 const Nav = () => {
 	// const {scrollNav, setScrollNav} = props;
-	const {user} = useContext(AuthContext);
+	// const {user} = useContext(AuthContext);
+
 	const authToken = localStorage.getItem('token');
+
+	const userStr = localStorage.getItem('user');
+	const user = userStr && JSON.parse(userStr);
 
 	const navigate = useNavigate();
 
@@ -50,14 +54,10 @@ const Nav = () => {
 	//TODO: Figure out how to achieve mouseMove with mousemove event to affect when the nav displays and hides
 	useEffect(() => {
 		window.addEventListener('scroll', changeNav);
-
-		// Add event listeners for mouse movement
 		window.addEventListener('mousemove', handleMouseMove);
 
 		return () => {
 			window.removeEventListener('scroll', changeNav);
-
-			// Remove event listeners when component unmounts
 			window.removeEventListener('mousemove', handleMouseMove);
 		};
 	}, []);
@@ -80,8 +80,8 @@ const Nav = () => {
 					<NavLink to='/' style={({isActive}) => (isActive ? activeLink : {})}>
 						Home
 					</NavLink>
-					<NavLink to='/bookingSelection' style={({isActive}) => (isActive ? activeLink : {})}>
-						Book
+					<NavLink to='/voucherSelection' style={({isActive}) => (isActive ? activeLink : {})}>
+						Buy Vouchers
 					</NavLink>
 					<NavLink to='/info' style={({isActive}) => (isActive ? activeLink : {})}>
 						Info
@@ -92,13 +92,13 @@ const Nav = () => {
 					<NavLink to='/news' style={({isActive}) => (isActive ? activeLink : {})}>
 						News
 					</NavLink>
-					{/* {user ? (
-							<NavLink to='/myprofile' style={({isActive}) => (isActive ? activeLink : {})}>
-								Settings
-							</NavLink>
-						) : (
-							<></>
-						)} */}
+					{user ? (
+						<NavLink to='/myprofile' style={({isActive}) => (isActive ? activeLink : {})}>
+							Profile
+						</NavLink>
+					) : (
+						<></>
+					)}
 					{authToken ? (
 						<a
 							style={{cursor: 'pointer'}}
@@ -108,7 +108,7 @@ const Nav = () => {
 								toast.success('Logging out...');
 								setTimeout(() => navigate(`/`), 500);
 							}}>
-							logout
+							Logout
 						</a>
 					) : (
 						<NavLink to='/login' style={({isActive}) => (isActive ? activeLink : {})}>

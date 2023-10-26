@@ -3,8 +3,8 @@ import {LoginData, LoginVariables, NotOk, RegisterData, RegisterVariables, User}
 import {toast} from 'react-toastify';
 import {useNavigate} from 'react-router-dom';
 import getToken from '../utils/getToken';
-import {LOGIN_USER, REGISTER_USER} from '../gql/mutations.js';
-import {useMutation} from '@apollo/client';
+import {GET_CURRENT_USER, LOGIN_USER, REGISTER_USER} from '../gql/mutations.js';
+import {useMutation, useQuery} from '@apollo/client';
 
 interface DefaultValue {
 	user: null | User;
@@ -45,7 +45,6 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 	const baseURL = import.meta.env.VITE_SERVER_BASE as string;
 	const [user, setUser] = useState<null | User>(null);
 	const navigate = useNavigate();
-	console.log(user);
 	const [registerMutationFunc, {loading}] = useMutation<RegisterData, RegisterVariables>(REGISTER_USER);
 	const register = async ({registerEmail, registerPassword, registerName}: RegisterVariables) => {
 		try {
@@ -58,9 +57,9 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 					registerPassword,
 					registerName,
 				},
-				onCompleted: (userData) => {
-					console.log('register variable', userData);
-					const {user, token} = userData.register;
+				onCompleted: (registerData) => {
+					console.log('register variable', registerData);
+					const {user, token} = registerData.register;
 					localStorage.setItem('user', JSON.stringify(user));
 					setUser(user);
 					localStorage.setItem('token', token);
@@ -147,25 +146,36 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 		setTimeout(() => navigate(`/`), 500);
 	};
 
-	//TODO:  This getctiveUser needs  fixing to work  with graphql. currently  not as good as it needs to be
-	const getActiveUser = async () => {
-		const token = getToken();
-		if (token && user) {
-			try {
-				console.log('user: ', user);
-			} catch (error) {
-				toast.error(error as string);
-				console.log(error);
-			}
-		} else {
-			console.log('No User or Token');
-			setUser(null);
-		}
-	};
+	// const {data, loading: activeUserLoading, error: activeUserError} = useQuery(GET_CURRENT_USER);
+	// const getActiveUser = async () => {
+	// 	try {
+	// 		// if (activeUserLoading) {
+	// 		// 	console.log('loading... get active suer');
+	// 		// 	return;
+	// 		// }
 
-	useEffect(() => {
-		// getActiveUser().catch((e) => console.log(e));
-	}, []);
+	// 		if (activeUserError) {
+	// 			// Handle error (e.g., display an error message)
+	// 			toast.error(activeUserError.message);
+	// 			console.error(activeUserError);
+	// 			return;
+	// 		}
+
+	// 		if (data && data.getCurrentUser) {
+	// 			const currentUser = data.getCurrentUser;
+	// 			setUser(currentUser);
+	// 			console.log('Current User:', currentUser);
+	// 		} else {
+	// 			console.log('No User Data');
+	// 			setUser(null);
+	// 		}
+	// 	} catch (error) {
+	// 		console.error(error);
+	// 	}
+	// };
+	// useEffect(() => {
+	// 	getActiveUser();
+	// }, []);
 
 	return <AuthContext.Provider value={{user, setUser, register, login, logout, update}}>{children}</AuthContext.Provider>;
 };
