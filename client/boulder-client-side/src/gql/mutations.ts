@@ -61,7 +61,6 @@ export const ADD_VOUCHERS = gql`
 			}
 		}
 	}
-	${USER_FIELDS}
 `;
 
 export const UPDATE_USER_PROFILE = gql`

@@ -165,26 +165,19 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 	};
 
 	const {data, loading: activeUserLoading, error: activeUserError} = useQuery(GET_CURRENT_USER);
-
 	const getActiveUser = async () => {
 		try {
 			if (activeUserLoading) {
 				setLoading(true);
-			}
-			if (activeUserError) {
+			} else if (activeUserError) {
 				toast.error(activeUserError.message);
 				console.error(activeUserError);
 				setLoading(false);
-				return;
 			}
 
 			if (data) {
 				const currentUser = data.getCurrentUser;
 				setUser(currentUser);
-				setLoading(false);
-			} else {
-				console.log('No User Data');
-				setUser(null);
 				setLoading(false);
 			}
 		} catch (error) {

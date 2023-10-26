@@ -1,5 +1,5 @@
 import {FormEvent, useContext, useState} from 'react';
-import {NavLink} from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import {AuthContext} from '../contexts/AuthContext';
 import {LoginVariables} from '../@types';
 
@@ -8,6 +8,7 @@ const Login = () => {
 	const [loginEmail, setEmail] = useState('');
 	const [loginPassword, setPassword] = useState('');
 	const loginVariables: LoginVariables = {loginEmail, loginPassword};
+	const navigate = useNavigate();
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		login(loginVariables).catch((e) => console.log(e));

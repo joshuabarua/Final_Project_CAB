@@ -2,6 +2,7 @@ import React, {CSSProperties, useContext, useEffect, useState} from 'react';
 import {NavLink, useNavigate} from 'react-router-dom';
 import {AuthContext} from '../contexts/AuthContext';
 import {toast} from 'react-toastify';
+import {User} from '../@types';
 
 // interface Props {
 // 	scrollNav: boolean;
@@ -42,7 +43,6 @@ const Nav = () => {
 		fontWeight: 'bold',
 	};
 
-	//TODO: Figure out how to achieve mouseMove with mousemove event to affect when the nav displays and hides
 	useEffect(() => {
 		window.addEventListener('scroll', changeNav);
 		window.addEventListener('mousemove', handleMouseMove);
@@ -58,7 +58,7 @@ const Nav = () => {
 	};
 
 	const changeNav = () => {
-		setScrollNav(window.scrollY >= 80);
+		setScrollNav(window.scrollY >= 50);
 	};
 
 	return (
@@ -84,7 +84,7 @@ const Nav = () => {
 						News
 					</NavLink>
 
-					{user ? (
+					{user && user ? (
 						loading ? (
 							<>loading data... </>
 						) : user.vouchers ? (
@@ -94,7 +94,7 @@ const Nav = () => {
 								</NavLink>
 							) : (
 								<div
-									style={{border: '1px solid gold', height: '50px', width: '50px', borderRadius: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+									style={{border: '1px solid gold', height: '40px', width: '40px', borderRadius: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 									<h3>x{user.vouchers.length}</h3>
 								</div>
 							)
@@ -105,14 +105,14 @@ const Nav = () => {
 						<></>
 					)}
 
-					{user ? (
+					{user && user ? (
 						<NavLink to='/myprofile' style={({isActive}) => (isActive ? activeLink : {})}>
 							Profile
 						</NavLink>
 					) : (
 						<></>
 					)}
-					{user ? (
+					{user && user ? (
 						<a style={{cursor: 'pointer'}} onClick={logout}>
 							Logout
 						</a>
