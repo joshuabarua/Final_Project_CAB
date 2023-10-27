@@ -1,25 +1,21 @@
 import mongoose from 'mongoose';
 
 const TimeslotSchema = new mongoose.Schema({
-	date: {
-		type: String,
-		required: true,
-	},
-	time: {
+	datetime: {
 		type: String,
 		required: true,
 	},
 	spots: {
 		type: Number,
-		required: true,
+		required: false,
 		min: 0,
 		max: 10,
 		default: 10,
 	},
-	userVouchers: {
-		type: [mongoose.Schema.Types.ObjectId],
+	userVoucher: {
+		type: mongoose.Schema.Types.ObjectId, //Add square brackets here to limit slots
 		ref: 'Voucher',
-		validate: [limitArray(10), 'Cannot have more that 10  users an hour'],
+		// validate: [limitArray(10), 'Cannot have more that 10  users an hour'],
 	},
 });
 

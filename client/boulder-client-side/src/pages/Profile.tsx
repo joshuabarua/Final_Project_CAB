@@ -12,21 +12,23 @@ interface User {
 
 const ProfilePage: React.FC = () => {
 	const {user, setUser} = useContext(AuthContext);
+	console.log('%c user in profile', ':color:orange', user);
 
 	const [name, setName] = useState(user?.name);
 	const [email, setEmail] = useState(user?.email);
 	const [password, setPassword] = useState(user?.password);
 
-	const {data, loading: queryLoading} = useQuery(GET_CURRENT_USER);
+	// const {data, loading: queryLoading} = useQuery(GET_CURRENT_USER);
 	const [updateUserProfile] = useMutation(UPDATE_USER_PROFILE);
 
 	useEffect(() => {
-		if (!queryLoading && data && data.currentUser) {
-			const currentUser = data.currentUser;
+		console.log('%cuseEffect running', ':color:red');
+		if (user) {
+			const currentUser = user;
 			setName(currentUser.name);
 			setEmail(currentUser.email);
 		}
-	}, [queryLoading, data]);
+	}, [user]);
 
 	const handleProfileUpdate = async () => {
 		try {
@@ -38,15 +40,14 @@ const ProfilePage: React.FC = () => {
 				},
 			});
 			setUser(updatedUser.data.updateUser);
-			// Optionally, update user data in local state or `localStorage`
 		} catch (error) {
 			console.error('Error updating user profile:', error);
 		}
 	};
 
-	if (queryLoading) {
-		return <div>Loading...</div>;
-	}
+	// if (queryLoading) {
+	// 	return <div>Loading...</div>;
+	// }
 
 	return (
 		<div className='centeredDivCol' style={{height: '100vh'}}>
@@ -84,7 +85,7 @@ const ProfilePage: React.FC = () => {
 							</div>
 							<div>
 								<h3>Timeslots Booked </h3>
-								<p>{user.assignedBookings.length}</p>
+								<p>{!user.assignedBookings ? 0 : user.assignedBookings.length}</p>
 							</div>
 						</div>
 					</div>

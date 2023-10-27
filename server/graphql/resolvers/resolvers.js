@@ -74,14 +74,14 @@ const resolvers = {
 	},
 
 	Timeslot: {
-		async userVouchers(parent) {
-			const userVouchers = parent.userVouchers;
-			console.log('userVoucher :>> '.bgBlue, userVouchers);
-			const userVouchersArr = userVouchers.map(async (voucherId) => {
-				return await voucherModel.findById(voucherId);
-			});
-			return userVouchersArr;
-		},
+		// async userVoucher(parent) {
+		// 	const userVoucher = parent.userVouchers;
+		// 	console.log('userVoucher :>> '.bgBlue, userVouchers);
+		// 	const userVouchersArr = userVouchers.map(async (voucherId) => {
+		// 		return await voucherModel.findById(voucherId);
+		// 	});
+		// 	return userVouchersArr;
+		// },
 	},
 
 	Voucher: {
@@ -105,11 +105,28 @@ const resolvers = {
 			});
 			return await newUser.save();
 		},
-		async addTimeslot(_, args) {
+
+		async useVoucher(_, args, context) {
+			const {selectedTime} = args;
+			const user = context.user;
+			const userVoucher = user.vouchers.pop();
+			await user.save();
 			const newTimeslot = new timeslotModel({
-				...args.newTimeslotData,
+				datetime: selectedTime,
+				userVoucher: userVoucher,
 			});
-			return await newTimeslot.save();
+			await newTimeslot.save();
+
+			const existingVoucher = await voucherModel.findByIdAndUpdate(
+				userVoucher,
+				{
+					assignedTimeslot: newTimeslot._id,
+					status: 'USED',
+				},
+				{new: true}
+			);
+			console.log('EXISTING VOUCHER'.bgMagenta, existingVoucher);
+			return newTimeslot;
 		},
 
 		addVouchers: async (_, {numberOfVouchers}, context) => {

@@ -18,9 +18,7 @@ const BoulderingVoucherCreation = () => {
 	const vouchers = parseInt(numberOfVouchers || '0', 10);
 	const [addVouchers] = useMutation(ADD_VOUCHERS);
 	const AMOUNT_PAYABLE = vouchers * TOKEN_VALUE;
-	const userId = user?._id;
 
-	console.log(userId, vouchers);
 	const handleCheckout = async () => {
 		try {
 			const result = await addVouchers({
@@ -33,9 +31,8 @@ const BoulderingVoucherCreation = () => {
 			}
 			if (result.data) {
 				console.log('results:', result.data);
-				refetch();
 				toast.success('Purchase Successful');
-				setTimeout(() => navigate('/'), 2000);
+				refetch();
 			}
 			console.log('result', result);
 		} catch (error) {
@@ -45,7 +42,6 @@ const BoulderingVoucherCreation = () => {
 	};
 
 	if (!vouchers || (vouchers !== 1 && vouchers !== 10)) {
-		// setTimeout(() => navigate('/bookingSelection'), 10000);
 		return (
 			<div className='centeredDivCol' style={{height: '100vh', paddingTop: '80px'}}>
 				<p>Invalid number of vouchers</p>

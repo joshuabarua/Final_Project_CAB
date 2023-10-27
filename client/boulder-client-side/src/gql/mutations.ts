@@ -16,13 +16,6 @@ export const USER_FIELDS = gql`
 `;
 
 // User Mutations
-// export const LOGOUT_USER = gql`
-// 	mutation LogoutUser {
-// 		logout {
-// 			success
-// 		}
-// 	}
-// `;
 
 export const LOGIN_USER = gql`
 	mutation LoginUser($loginEmail: String!, $loginPassword: String!) {
@@ -83,6 +76,17 @@ export const UPDATE_USER_PROFILE = gql`
 	}
 `;
 
+export const USE_VOUCHER = gql`
+	mutation useVoucher($selectedTime: String!) {
+		useVoucher(selectedTime: $selectedTime) {
+			_id
+			userVoucher
+			datetime
+			spots
+		}
+	}
+`;
+
 //Queries
 export const GET_CURRENT_USER = gql`
 	query CurrentUser {
@@ -96,8 +100,9 @@ export const GET_CURRENT_USER = gql`
 			}
 			assignedBookings {
 				_id
-				date
-				time
+				userVoucher
+				datetime
+				spots
 			}
 		}
 	}
@@ -107,10 +112,9 @@ export const GET_ALL_TIMESLOTS = gql`
 	query AllTimeslots {
 		timeslots {
 			_id
-			date
-			time
+			dateTime
 			spots
-			userVouchers {
+			userVoucher {
 				_id
 			}
 		}

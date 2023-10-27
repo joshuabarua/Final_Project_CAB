@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {DateTimePicker, LocalizationProvider} from '@mui/x-date-pickers';
-import {Box, Button, Typography} from '@mui/material';
+import {Button, Typography} from '@mui/material';
 import {format} from 'date-fns';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import ConfirmationDialog from '../components/ConfirmationDialog';
@@ -26,11 +26,6 @@ const BookTimeSlot = () => {
 	};
 
 	const handleClose = () => {
-		setOpen(false);
-	};
-
-	const handleConfirm = () => {
-		// Handle the booking confirmation logic here
 		setOpen(false);
 	};
 
@@ -69,7 +64,7 @@ const BookTimeSlot = () => {
 					<Button variant='contained' color='primary' onClick={handleOpen}>
 						Make Booking
 					</Button>
-					<ConfirmationDialog open={open} onClose={handleClose} onConfirm={handleConfirm} selectedTime={selectedTime!} />
+					<ConfirmationDialog open={open} onClose={handleClose} selectedTime={selectedTime!} />
 				</div>
 			</LocalizationProvider>
 		</div>

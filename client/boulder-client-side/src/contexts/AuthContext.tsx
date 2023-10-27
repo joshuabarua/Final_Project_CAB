@@ -104,6 +104,7 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 
 			if (result.data) {
 				const {user, token} = result.data.login;
+				console.log('result :>> ', result);
 				localStorage.setItem('token', token);
 				localStorage.setItem('user', JSON.stringify(user));
 				setUser(user);
@@ -150,7 +151,6 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 			console.log('no token');
 		}
 	};
-	// const [logoutUser, {error: logoutError}] = useMutation(LOGOUT_USER);
 
 	const logout = async () => {
 		try {
@@ -160,7 +160,6 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 				setUser(null);
 				localStorage.removeItem('token');
 				localStorage.removeItem('user');
-				// logoutUser();
 				toast.success('Logging out...');
 				setTimeout(() => redirect('/'), 1500);
 			}
@@ -170,7 +169,11 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 	};
 
 	const {data, loading: activeUserLoading, error: activeUserError, refetch} = useQuery(GET_CURRENT_USER);
+	
 	const getActiveUser = async () => {
+		const result = await data;
+		console.log('result TWOOO:>> ', result);
+		console.log('data in getActiveUser() :>> ', data);
 		try {
 			if (activeUserLoading) {
 				setLoading(true);
@@ -179,8 +182,11 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 				console.error(activeUserError);
 				setLoading(false);
 			}
-
 			if (data) {
+				const localToken = localStorage.getItem('token');
+				// if (localToken) {
+
+				// }
 				const currentUser = data.getCurrentUser;
 				setUser(currentUser);
 				setLoading(false);

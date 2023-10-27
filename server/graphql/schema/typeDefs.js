@@ -1,5 +1,7 @@
 const gql = String.raw;
 
+//Inside Type Voucher, userVoucher was changed from an [Voucher] to Voucher, change back for storing multiple vouchers in future per timeslot
+
 const typeDefs = `#graphql
 	enum CodeStatus {
 		USED
@@ -17,12 +19,12 @@ const typeDefs = `#graphql
 		vouchers: [Voucher]
 	}
 
+
 	type Timeslot {
 		_id: ID!
-		date: String!
-		time: String!
+		datetime: String!
 		spots: Int!
-		userVouchers: [Voucher]
+		userVoucher: ID!
 	}
 
 	type Voucher {
@@ -53,6 +55,7 @@ const typeDefs = `#graphql
 	type Mutation {
 		addUser(newUserData: AddUserInput!): User
 		addTimeslot(newTimeslotData: AddTimeslotInput!): Timeslot
+		useVoucher(selectedTime: String!): Timeslot
 		addVouchers(numberOfVouchers: Int!): [Voucher]
 		deleteUser(_id: ID!): User
 		login(email: String!, password: String!): AuthPayload
@@ -68,8 +71,7 @@ const typeDefs = `#graphql
 	}
 
 	input AddTimeslotInput {
-		date: String!
-		time: String!
+	datetime: String!
 		spots: Int!
 	}
 `;

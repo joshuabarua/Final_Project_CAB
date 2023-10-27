@@ -12,8 +12,7 @@ import {User} from '../@types';
 
 const Nav = () => {
 	// const {scrollNav, setScrollNav} = props;
-	const {user, logout, loading, refetch} = useContext(AuthContext);
-	const navigate = useNavigate();
+	const {user, logout, loading} = useContext(AuthContext);
 	const [scrollNav, setScrollNav] = useState(false);
 	const [isMouseMoving, setIsMouseMoving] = useState(false);
 
@@ -66,7 +65,6 @@ const Nav = () => {
 		setScrollNav(window.scrollY >= 50);
 	};
 
-	console.log('USER >>>>:', user);
 	return (
 		<nav style={navStyles}>
 			<div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', width: '100%', padding: '1em'}}>
@@ -75,7 +73,7 @@ const Nav = () => {
 						<img src={logoImg} alt='climbing' style={{width: '50px', borderRadius: ' 50%'}} />
 					</NavLink>
 					<NavLink to='/'>
-						<h1 style={{color: ' rgba(230, 56, 91, 0.82', fontFamily: 'BebasNeue'}}>Boulder Bebi's</h1>
+						<h1 style={{color: ' rgba(230, 56, 91, 0.82)', fontFamily: 'BebasNeue'}}>Boulder Bebi's</h1>
 					</NavLink>
 				</div>
 				<div style={linksContainerStyles}>
@@ -109,7 +107,7 @@ const Nav = () => {
 										justifyContent: 'center',
 										alignItems: 'center',
 									}}>
-									<h3 style={{color: ' rgba(230, 56, 91, 0.82', border: '2px solid  rgba(230, 56, 91, 0.82)', height: '30px', width: '35px', borderRadius: '100%'}}>
+									<h3 style={{color: ' rgba(230, 56, 91, 0.82)', border: '2px solid  rgba(230, 56, 91, 0.82)', height: '30px', width: '35px', borderRadius: '100%'}}>
 										x{user.vouchers.length}
 									</h3>
 								</div>
