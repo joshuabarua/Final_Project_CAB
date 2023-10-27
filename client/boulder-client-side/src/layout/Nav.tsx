@@ -12,7 +12,7 @@ import {User} from '../@types';
 
 const Nav = () => {
 	// const {scrollNav, setScrollNav} = props;
-	const {user, logout, loading} = useContext(AuthContext);
+	const {user, logout, loading, refetch} = useContext(AuthContext);
 	const navigate = useNavigate();
 	const [scrollNav, setScrollNav] = useState(false);
 	const [isMouseMoving, setIsMouseMoving] = useState(false);
@@ -66,6 +66,7 @@ const Nav = () => {
 		setScrollNav(window.scrollY >= 50);
 	};
 
+	console.log('USER >>>>:', user);
 	return (
 		<nav style={navStyles}>
 			<div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', width: '100%', padding: '1em'}}>
@@ -93,7 +94,6 @@ const Nav = () => {
 					<NavLink to='/news' style={({isActive}) => (isActive ? activeLink : {})}>
 						News
 					</NavLink>
-
 					{user && user ? (
 						loading ? (
 							<>loading data... </>
@@ -120,7 +120,6 @@ const Nav = () => {
 					) : (
 						<></>
 					)}
-
 					{user && user ? (
 						<NavLink to='/myprofile' style={({isActive}) => (isActive ? activeLink : {})}>
 							Profile

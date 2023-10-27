@@ -6,17 +6,23 @@ export const USER_FIELDS = gql`
 		_id
 		email
 		name
+		vouchers {
+			_id
+		}
+		assignedBookings {
+			_id
+		}
 	}
 `;
 
 // User Mutations
-export const LOGOUT_USER = gql`
-	mutation LogoutUser {
-		logout {
-			success
-		}
-	}
-`;
+// export const LOGOUT_USER = gql`
+// 	mutation LogoutUser {
+// 		logout {
+// 			success
+// 		}
+// 	}
+// `;
 
 export const LOGIN_USER = gql`
 	mutation LoginUser($loginEmail: String!, $loginPassword: String!) {

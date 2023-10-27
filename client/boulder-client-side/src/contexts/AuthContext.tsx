@@ -3,12 +3,13 @@ import {LoginData, LoginVariables, NotOk, RegisterData, RegisterVariables, User}
 import {toast} from 'react-toastify';
 import {redirect, useNavigate} from 'react-router-dom';
 import getToken from '../utils/getToken';
-import {GET_CURRENT_USER, LOGIN_USER, LOGOUT_USER, REGISTER_USER} from '../gql/mutations.js';
-import {useMutation, useQuery} from '@apollo/client';
+import {GET_CURRENT_USER, LOGIN_USER, REGISTER_USER} from '../gql/mutations.js';
+import {ApolloQueryResult, OperationVariables, useMutation, useQuery} from '@apollo/client';
 
 interface DefaultValue {
 	user: null | User;
 	setUser: React.Dispatch<React.SetStateAction<User | null>>;
+	refetch: (variables?: Partial<OperationVariables> | undefined) => Promise<ApolloQueryResult<any>>;
 	loading: boolean;
 	login: ({loginEmail, loginPassword}: LoginVariables) => Promise<void>;
 	logout: () => void;
@@ -25,6 +26,9 @@ const initialValue: DefaultValue = {
 	user: null,
 	loading: false,
 	setUser: () => {
+		throw new Error('context not implemented.');
+	},
+	refetch: () => {
 		throw new Error('context not implemented.');
 	},
 	login: () => {
@@ -102,6 +106,7 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 				const {user, token} = result.data.login;
 				localStorage.setItem('token', token);
 				localStorage.setItem('user', JSON.stringify(user));
+				setUser(user);
 				toast.success('Login Successful');
 				setLoading(false);
 				navigate('/');
@@ -145,17 +150,17 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 			console.log('no token');
 		}
 	};
-	const [logoutUser, {error: logoutError}] = useMutation(LOGOUT_USER);
+	// const [logoutUser, {error: logoutError}] = useMutation(LOGOUT_USER);
 
 	const logout = async () => {
 		try {
-			if (logoutError) {
-				console.log('Error:', logoutError);
+			if (error) {
+				console.log('Error:', error);
 			} else {
 				setUser(null);
 				localStorage.removeItem('token');
 				localStorage.removeItem('user');
-				logoutUser();
+				// logoutUser();
 				toast.success('Logging out...');
 				setTimeout(() => redirect('/'), 1500);
 			}
@@ -164,7 +169,7 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 		}
 	};
 
-	const {data, loading: activeUserLoading, error: activeUserError} = useQuery(GET_CURRENT_USER);
+	const {data, loading: activeUserLoading, error: activeUserError, refetch} = useQuery(GET_CURRENT_USER);
 	const getActiveUser = async () => {
 		try {
 			if (activeUserLoading) {
@@ -190,5 +195,5 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 		getActiveUser();
 	}, [data]);
 
-	return <AuthContext.Provider value={{user, loading, setUser, register, login, logout, update}}>{children}</AuthContext.Provider>;
+	return <AuthContext.Provider value={{user, loading, setUser, register, login, logout, update, refetch}}>{children}</AuthContext.Provider>;
 };

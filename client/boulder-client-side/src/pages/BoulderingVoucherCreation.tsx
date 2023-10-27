@@ -4,19 +4,21 @@ import styles from '../styles/BoulderTokenCreation.module.css';
 import {toast} from 'react-toastify';
 import bgImage from '../assets/imgs/pexels-cottonbro-studio-6701740.jpg';
 import {ADD_VOUCHERS} from '../gql/mutations';
+import {AuthContext} from '../contexts/AuthContext';
+import {useContext} from 'react';
 
 const TOKEN_VALUE = 10;
 
 const BoulderingVoucherCreation = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const {user, refetch} = useContext(AuthContext);
 	const searchParams = new URLSearchParams(location.search);
 	const numberOfVouchers = searchParams.get('vouchers');
 	const vouchers = parseInt(numberOfVouchers || '0', 10);
 	const [addVouchers] = useMutation(ADD_VOUCHERS);
 	const AMOUNT_PAYABLE = vouchers * TOKEN_VALUE;
-	const user = JSON.parse(localStorage.getItem('user') || '{}');
-	const userId = user._id;
+	const userId = user?._id;
 
 	console.log(userId, vouchers);
 	const handleCheckout = async () => {
@@ -31,6 +33,7 @@ const BoulderingVoucherCreation = () => {
 			}
 			if (result.data) {
 				console.log('results:', result.data);
+				refetch();
 				toast.success('Purchase Successful');
 				setTimeout(() => navigate('/'), 2000);
 			}
