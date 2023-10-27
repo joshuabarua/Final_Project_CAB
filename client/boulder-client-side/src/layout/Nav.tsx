@@ -1,6 +1,7 @@
 import React, {CSSProperties, useContext, useEffect, useState} from 'react';
 import {NavLink, useNavigate} from 'react-router-dom';
 import {AuthContext} from '../contexts/AuthContext';
+import logoImg from '../assets/imgs/326308_boulder_bbs.png';
 import {toast} from 'react-toastify';
 import {User} from '../@types';
 
@@ -28,6 +29,8 @@ const Nav = () => {
 		transition: '0.4s ease-in-out',
 		top: isMouseMoving ? '0' : '-20%',
 		left: '0px',
+		fontFamily: 'BebasNeue',
+		fontSize: 'larger',
 	};
 
 	const linksContainerStyles: React.CSSProperties = {
@@ -66,8 +69,13 @@ const Nav = () => {
 	return (
 		<nav style={navStyles}>
 			<div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', width: '100%', padding: '1em'}}>
-				<div>
-					<h1>Logo</h1>
+				<div className='centeredDivRow' style={{gap: '10px'}}>
+					<NavLink to='/'>
+						<img src={logoImg} alt='climbing' style={{width: '50px', borderRadius: ' 50%'}} />
+					</NavLink>
+					<NavLink to='/'>
+						<h1 style={{color: ' rgba(230, 56, 91, 0.82', fontFamily: 'BebasNeue'}}>Boulder Bebi's</h1>
+					</NavLink>
 				</div>
 				<div style={linksContainerStyles}>
 					<NavLink to='/' style={({isActive}) => (isActive ? activeLink : {})}>

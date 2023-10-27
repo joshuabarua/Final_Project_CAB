@@ -1,3 +1,8 @@
+@font-face {
+	font-family: 'BebasNeue';
+	src: local('BebasNeue-Regular'), url('./assets/fonts/Bebas_Neue/BebasNeue-Regular.ttf') format('truetype');
+}
+
 :root {
 	font-family: Arial, sans-serif;
 	line-height: 1.5;
