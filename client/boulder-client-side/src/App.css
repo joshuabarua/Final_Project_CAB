@@ -13,7 +13,7 @@
 	--accent-color: #fce6d1;
 
 	--background-light: #eefaf7; /* Light mode background color */
-	--text-light: #3a3335; /* Light mode text color */
+	--text-light: #000000; /* Light mode text color */
 	--content-light: #87ceeb; /* Light mode primary content color */
 	--links-light: #007bff; /* Light mode link color */
 	--buttons-light: #f9f9f9; /* Light mode button color */
@@ -109,7 +109,7 @@ body {
 	cursor: pointer;
 	transition: transform 0.2s;
 	width: 33%;
-	height: 30vh;
+	height: 20vh;
 }
 
 .card h2 {

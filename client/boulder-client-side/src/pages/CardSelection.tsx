@@ -10,11 +10,11 @@ const EventBookingCards: React.FC = () => {
 
 	return (
 		<div className='centeredDivCol' style={{height: '80vh', justifyContent: 'space-evenly', gap: '10px'}}>
-			<h1>Select a Booking Card</h1>
+			<h1>Voucher Selection</h1>
 
 			<div className='centeredDivRow' style={{gap: '10px'}}>
 				<div className={`card ${selectedCard === 1 ? 'selected' : ''}`} onClick={() => handleCardSelect(1)}>
-					<h2>One-Time Card</h2>
+					<h2>One-Time Voucher</h2>
 					<p>Generates a boulder token for use with booking.</p>
 					{selectedCard === 1 && (
 						<div className='selected-card-content'>
@@ -24,7 +24,7 @@ const EventBookingCards: React.FC = () => {
 				</div>
 
 				<div className={`card ${selectedCard === 2 ? 'selected' : ''}`} onClick={() => handleCardSelect(2)}>
-					<h2>10er Card</h2>
+					<h2>10er Voucher</h2>
 					<p>Creates 10 voucher codes for 10 sessions, useable whenever you need them most.</p>
 					{selectedCard === 2 && (
 						<div className='selected-card-content'>

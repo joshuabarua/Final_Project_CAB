@@ -14,6 +14,7 @@ const Footer = () => {
 				height: '30vh',
 				padding: '10px',
 				backgroundColor: '#fce6d1',
+				color: 'rgba(230, 56, 91, 0.82)',
 			}}>
 			<div style={{display: 'flex', justifyContent: 'space-evenly', gap: '20px', alignItems: 'center', flexDirection: 'row', width: '100%'}}>
 				<div className='footer'>

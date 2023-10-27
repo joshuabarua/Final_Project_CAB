@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {DateTimePicker, LocalizationProvider} from '@mui/x-date-pickers';
-import {Box, Typography} from '@mui/material';
+import {Box, Button, Typography} from '@mui/material';
 import {format} from 'date-fns';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import ConfirmationDialog from '../components/ConfirmationDialog';
 
 const TWO_WEEKS = 1209600000;
 
@@ -17,6 +18,21 @@ maxTime.setHours(21, 0, 0, 0);
 const BookTimeSlot = () => {
 	const [selectedTime, setSelectedTime] = useState<Date | null>(new Date(Date.now()));
 	const [minTime, setMinTime] = useState<Date | null>(minTimeConfig);
+
+	const [open, setOpen] = useState(false);
+
+	const handleOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
+
+	const handleConfirm = () => {
+		// Handle the booking confirmation logic here
+		setOpen(false);
+	};
 
 	console.log(selectedTime);
 	// const formattedInitialValue = selectedTime ? dayjs(selectedTime).format('DD/MM/YYYY HH:mm') : '';
@@ -50,6 +66,10 @@ const BookTimeSlot = () => {
 						className='whiteText'
 					/>
 					{selectedTime && <Typography variant='body2'>Selected Timeslot {format(selectedTime, 'dd/MM/yyyy HH')}:00</Typography>}
+					<Button variant='contained' color='primary' onClick={handleOpen}>
+						Make Booking
+					</Button>
+					<ConfirmationDialog open={open} onClose={handleClose} onConfirm={handleConfirm} selectedTime={selectedTime!} />
 				</div>
 			</LocalizationProvider>
 		</div>

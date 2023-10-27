@@ -29,6 +29,7 @@ const Homepage = () => {
 							fontSize: 86,
 							lineHeight: '70px',
 							fontFamily: 'BebasNeue',
+							color: 'rgba(230, 56, 91, 0.82)',
 						}}>
 						Boulder Bebi's
 					</h1>
