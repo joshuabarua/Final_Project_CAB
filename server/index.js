@@ -57,10 +57,11 @@ const addMiddlewares = () => {
 
 const startServer = async () => {
   const port = process.env.PORT || 4001;
-
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    playground: true,
+    introspection: true,
   });
   await server.start();
   app.use(
